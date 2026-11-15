@@ -51,7 +51,7 @@
     }
 
     h1 {
-      font-size: 1.18rem;
+      font-size: 1.15rem;
       color: var(--primary);
       margin-bottom: 4px;
       text-align: center;
@@ -62,7 +62,7 @@
     .subtitle {
       text-align: center;
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       margin-bottom: 12px;
       font-weight: 500;
     }
@@ -86,7 +86,7 @@
         grid-template-columns: 1fr 1fr 1fr;
       }
       body { padding: 16px; }
-      h1 { font-size: 1.32rem; }
+      h1 { font-size: 1.3rem; }
     }
 
     .action-group {
@@ -99,7 +99,7 @@
     select, button {
       padding: 10px 12px;
       border-radius: 10px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       border: 1.5px solid var(--border);
@@ -222,8 +222,8 @@
     .quiz-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
-      min-width: 320px;
+      font-size: 0.86rem;
+      min-width: 300px;
       background: #fff;
     }
 
@@ -438,8 +438,8 @@
         <div class="action-group">
           <button class="btn-primary" id="submitBtn" onclick="submitExam()" style="display:none;">Nộp bài & Chấm điểm</button>
           <button class="btn-warning" id="retryWrongBtn" onclick="retryWrong()" style="display:none;">Làm lại câu sai / thiếu điểm</button>
-          <button class="btn-outline" onclick="initQuiz(true)">Đảo thứ tự câu</button>
-          <button class="btn-outline" onclick="initQuiz(false)">Làm lại từ đầu</button>
+          <button class="btn-outline" onclick="initQuiz(true)">🔀 Đảo câu & Đảo đáp án</button>
+          <button class="btn-outline" onclick="initQuiz(false)">🔄 Làm lại từ đầu (Gốc)</button>
         </div>
       </div>
     </div>
@@ -453,16 +453,18 @@
       </div>
     </div>
 
-    <div id="quizContainer"></div>
+    <div id="quizContainer">
+      <div class="question-card">Đang tải câu hỏi...</div>
+    </div>
 
     <div class="bottom-tool-card">
       <div class="bottom-tool-title">Công cụ cuối trang - Hóa học 12</div>
-      <div class="bottom-tool-desc">Sử dụng các nút bên dưới để nộp bài, lọc làm lại các câu sai hoặc cuộn nhanh lên đầu trang.</div>
+      <div class="bottom-tool-desc">Sử dụng các nút bên dưới để nộp bài, đảo câu kèm đáp án hoặc cuộn nhanh lên đầu trang.</div>
       <div class="bottom-tool-actions">
         <button class="btn-primary" id="bottomSubmitBtn" onclick="submitExam()" style="display:none;">Nộp bài & Chấm điểm ngay</button>
         <button class="btn-warning" id="bottomRetryBtn" onclick="retryWrong()" style="display:none;">Làm lại câu sai / thiếu điểm</button>
+        <button class="btn-outline" onclick="initQuiz(true)">🔀 Đảo câu & Đảo đáp án</button>
         <button class="btn-primary" onclick="scrollToTopFast()">⚡ Lên đầu trang</button>
-        <button class="btn-outline" onclick="initQuiz(false)">Làm lại từ đầu</button>
       </div>
     </div>
   </div>
@@ -470,156 +472,56 @@
   <button class="floating-top-btn" id="floatingTopBtn" onclick="scrollToTopFast()">⬆ Đầu trang</button>
 
   <script>
-    const QUIZ_CONFIG = {
+    window.onerror = function(msg, url, line) {
+      var c = document.getElementById("quizContainer");
+      if (c) {
+        c.innerHTML = '<div class="question-card" style="color:#dc2626;font-weight:700;">Lỗi hiển thị: ' + msg + ' (Dòng ' + line + ')</div>';
+      }
+    };
+
+    var QUIZ_CONFIG = {
       mcqPoint: 0.25,
       tfPoints: [0, 0.1, 0.25, 0.5, 1.0],
       saPoint: 0.25
     };
 
-    const TOPIC_1 = "PHẦN 1: AMINE (Trang 74 - 79)";
-    const TOPIC_2 = "PHẦN 2: AMINO ACID & PEPTIDE (Trang 82 - 90)";
-    const TOPIC_3 = "PHẦN 3: PROTEIN & ENZYME (Trang 91 - 101)";
-    const TOPIC_4 = "PHẦN 4: ÔN TẬP CHƯƠNG (Trang 103 - 108)";
+    var LETTERS = ["A", "B", "C", "D"];
+    var SUB_LETTERS = ["a", "b", "c", "d"];
 
-    const allQuestions = [
+    var TOPIC_1 = "PHẦN 1: AMINE (Trang 74 - 79)";
+    var TOPIC_2 = "PHẦN 2: AMINO ACID & PEPTIDE (Trang 82 - 90)";
+    var TOPIC_3 = "PHẦN 3: PROTEIN & ENZYME (Trang 91 - 101)";
+    var TOPIC_4 = "PHẦN 4: ÔN TẬP CHƯƠNG (Trang 103 - 108)";
+
+    var TABLE_P1_C34 = '<div class="table-wrap"><table class="quiz-table"><thead><tr><th>Chất</th><th>Thuốc thử</th><th>Hiện tượng</th></tr></thead><tbody><tr><td>X</td><td>Quỳ tím</td><td>Quỳ tím chuyển màu xanh</td></tr><tr><td>Y</td><td>Dung dịch AgNO₃/NH₃, t°</td><td>Tạo kết tủa Ag</td></tr><tr><td>Z</td><td>Nước bromine</td><td>Tạo kết tủa trắng</td></tr></tbody></table></div>';
+
+    var TABLE_P2_C33 = '<div class="table-wrap"><table class="quiz-table"><thead><tr><th>pH</th><th>4,0</th><th>7,6</th><th>12,0</th></tr></thead><tbody><tr><td>Dạng tồn tại</td><td>Dạng (I) (Cation +1)</td><td>Dạng (II) (Ion lưỡng cực 0)</td><td>Dạng (III) (Anion -1)</td></tr></tbody></table></div>';
+
+    var TABLE_P2_C34 = '<div class="table-wrap"><table class="quiz-table"><thead><tr><th>Chất</th><th>Thuốc thử</th><th>Hiện tượng</th></tr></thead><tbody><tr><td>X</td><td>Quỳ tím</td><td>Quỳ tím chuyển màu hồng</td></tr><tr><td>Y</td><td>Dung dịch AgNO₃ trong NH₃</td><td>Tạo kết tủa Ag</td></tr><tr><td>Z</td><td>Nước bromine</td><td>Tạo kết tủa trắng</td></tr></tbody></table></div>';
+
+    var TABLE_P4_C35 = '<div class="table-wrap"><table class="quiz-table"><thead><tr><th>Amino acid</th><th>Alanine</th><th>Lysine</th><th>Glutamic acid</th><th>Histidine</th><th>Aspartic acid</th></tr></thead><tbody><tr><td>pH (pI)</td><td>6,0</td><td>9,7</td><td>3,2</td><td>7,6</td><td>2,8</td></tr></tbody></table></div>';
+
+    var allQuestions = [
       // ==================== PHẦN 1: AMINE (TRANG 74 - 79) ====================
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 7 (Trang 74). Nhóm chức trong amine là",
-        options: { A: "A. -OH.", B: "B. -NH₂.", C: "C. -COOH.", D: "D. -CHO." },
-        ans: "B"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 8 (Trang 74). Amine là dẫn xuất của:",
-        options: { A: "A. Methane.", B: "B. Ammonia.", C: "C. Ethanol.", D: "D. Acetic acid." },
-        ans: "B"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 9 (Trang 74). Amine nào sau đây là chất lỏng ở nhiệt độ phòng?",
-        options: { A: "A. Methylamine.", B: "B. Ethylamine.", C: "C. Dimethylamine.", D: "D. Aniline." },
-        ans: "D"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 10 (Trang 74). Chất nào sau đây thuộc loại amine bậc một?",
-        options: { A: "A. CH₃NHCH₃.", B: "B. CH₃CH₂NHCH₃.", C: "C. CH₃NH₂.", D: "D. (CH₃)₃N." },
-        ans: "C"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 11 (Trang 74). Trong các chất dưới đây, chất nào là amine bậc hai?",
-        options: { A: "A. H₂N(CH₂)₆NH₂.", B: "B. CH₃NHCH₃.", C: "C. CH₃CH(CH₃)NH₂.", D: "D. C₆H₅NH₂." },
-        ans: "B"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 12 (Trang 74). Amine có cấu tạo CH₃CH₂CH(NH₂)CH₃ là amine",
-        options: { A: "A. bậc 3.", B: "B. bậc 2.", C: "C. bậc 1.", D: "D. bậc 4." },
-        ans: "C",
-        explanation: "Nguyên tử N liên kết trực tiếp với 1 gốc hydrocarbon (nhóm -NH₂) nên là amine bậc 1."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 13 (Trang 74). Cho các chất sau: ethylamine; aniline; dimethylamine; trimethylamine. Số chất amine bậc 2 là",
-        options: { A: "A. 4.", B: "B. 2.", C: "C. 1.", D: "D. 3." },
-        ans: "C",
-        explanation: "Chỉ có 1 chất là dimethylamine (CH₃NHCH₃)."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 14 (Trang 75). Chất nào sau đây là amine bậc 3?",
-        options: { A: "A. C₂H₅NH₂.", B: "B. CH₃NHCH₃.", C: "C. Aniline.", D: "D. (CH₃)₃N." },
-        ans: "D"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 15 (Trang 75). Methylamine là tên gọi của chất nào dưới đây?",
-        options: { A: "A. CH₃Cl.", B: "B. CH₃NH₂.", C: "C. CH₃OH.", D: "D. CH₃CH₂NH₂." },
-        ans: "B"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 16 (Trang 75). Công thức phân tử của dimethylamine là",
-        options: { A: "A. C₂H₈N₂.", B: "B. C₂H₇N.", C: "C. C₄H₁₁N.", D: "D. C₂H₆N₂." },
-        ans: "B"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 17 (Trang 75). Benzylamine có công thức phân tử là",
-        options: { A: "A. C₆H₇N.", B: "B. C₇H₉N.", C: "C. C₇H₇N.", D: "D. C₇H₈N." },
-        ans: "B",
-        explanation: "Benzylamine có công thức C₆H₅CH₂NH₂ (C₇H₉N)."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 18 (Trang 75). N-methylethanamine có công thức là",
-        options: { A: "A. C₂H₅NHCH₃.", B: "B. CH₃NHCH₃.", C: "C. CH₃NH₂.", D: "D. CH₃NH₂C₂H₅." },
-        ans: "A"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 19 (Trang 75). Ứng với CTPT C₃H₉N sẽ có số đồng phân là",
-        options: { A: "A. 5.", B: "B. 4.", C: "C. 2.", D: "D. 3." },
-        ans: "B",
-        explanation: "Gồm 2 đồng phân bậc 1, 1 đồng phân bậc 2 và 1 đồng phân bậc 3."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 20 (Trang 75). Có bao nhiêu amine bậc 2 có cùng công thức phân tử C₄H₁₁N?",
-        options: { A: "A. 3.", B: "B. 8.", C: "C. 4.", D: "D. 1." },
-        ans: "A",
-        explanation: "Gồm: CH₃NHCH₂CH₂CH₃, CH₃NHCH(CH₃)₂ và C₂H₅NHC₂H₅."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 21 (Trang 75). Số đồng phân cấu tạo ứng với amine có công thức phân tử C₄H₁₁N là",
-        options: { A: "A. 7.", B: "B. 6.", C: "C. 8.", D: "D. 5." },
-        ans: "C",
-        explanation: "Gồm 4 bậc 1 + 3 bậc 2 + 1 bậc 3 = 8 đồng phân."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 22 (Trang 75). Để khử mùi tanh của cá (gây ra do một số amine) ta có thể rửa cá với:",
-        options: { A: "A. Nước.", B: "B. Nước muối.", C: "C. Cồn.", D: "D. Giấm." },
-        ans: "D"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 23 (Trang 75). Danh pháp IUPAC của CH₃NHCH₂CH₂CH₃ là",
-        options: { A: "A. Methylpropylamine.", B: "B. N-methylpropan-1-amine.", C: "C. N-methylpropan-3-amine.", D: "D. N-propylmethanamine." },
-        ans: "B"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 24 (Trang 75). Amine nào sau đây không làm đổi màu giấy quỳ?",
-        options: { A: "A. Aniline.", B: "B. Ethylamine.", C: "C. Methylamine.", D: "D. Dimethylamine." },
-        ans: "A"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 25 (Trang 75). Thêm ethylamine dư vào dung dịch CuSO₄ đến phản ứng hoàn toàn thu được",
-        options: { A: "A. Kết tủa màu xanh nhạt.", B: "B. Dung dịch màu xanh lam.", C: "C. Kết tủa màu xanh đậm.", D: "D. Dung dịch màu xanh nhạt." },
-        ans: "B",
-        explanation: "Ban đầu tạo kết tủa Cu(OH)₂ màu xanh nhạt, sau đó kết tủa tan trong ethylamine dư tạo dung dịch phức chất màu xanh lam."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 26 (Trang 75-76). Thêm methylamine dư vào dung dịch FeCl₃ đến khi phản ứng xảy ra hoàn toàn thu được",
-        options: { A: "A. Kết tủa màu đỏ nâu.", B: "B. Dung dịch màu vàng nâu.", C: "C. Kết tủa màu vàng nâu.", D: "D. Dung dịch màu đỏ nâu." },
-        ans: "A",
-        explanation: "Tạo kết tủa Fe(OH)₃ màu đỏ nâu (không tạo phức tan với methylamine)."
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 27 (Trang 76). Amine không được sử dụng trong lĩnh vực nào sau đây?",
-        options: { A: "A. Dược phẩm.", B: "B. Thuốc nhuộm.", C: "C. Công nghiệp polymer.", D: "D. Công nghiệp silicate." },
-        ans: "D"
-      },
-      {
-        type: "mcq", topicName: TOPIC_1,
-        q: "Câu 28 (Trang 76). Các amine như CH₃NH₂, CH₃NHCH₃, CH₃CH₂NH₂, và NH₂CH₂NH₂ tan tốt trong nước vì:",
-        options: {
-          A: "A. Chúng tạo liên kết hydrogen với nước.",
-          B: "B. Chúng tạo liên kết hydrogen v
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 7 (Trang 74). Nhóm chức trong amine là", opts: ["-OH.", "-NH₂.", "-COOH.", "-CHO."], ans: 1 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 8 (Trang 74). Amine là dẫn xuất của:", opts: ["Methane.", "Ammonia.", "Ethanol.", "Acetic acid."], ans: 1 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 9 (Trang 74). Amine nào sau đây là chất lỏng ở nhiệt độ phòng?", opts: ["Methylamine.", "Ethylamine.", "Dimethylamine.", "Aniline."], ans: 3 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 10 (Trang 74). Chất nào sau đây thuộc loại amine bậc một?", opts: ["CH₃NHCH₃.", "CH₃CH₂NHCH₃.", "CH₃NH₂.", "(CH₃)₃N."], ans: 2 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 11 (Trang 74). Trong các chất dưới đây, chất nào là amine bậc hai?", opts: ["H₂N(CH₂)₆NH₂.", "CH₃NHCH₃.", "CH₃CH(CH₃)NH₂.", "C₆H₅NH₂."], ans: 1 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 12 (Trang 74). Amine có cấu tạo CH₃CH₂CH(NH₂)CH₃ là amine", opts: ["bậc 3.", "bậc 2.", "bậc 1.", "bậc 4."], ans: 2, explanation: "Nguyên tử N liên kết trực tiếp với 1 gốc hydrocarbon (có nhóm -NH₂) nên là amine bậc 1." },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 13 (Trang 74). Cho các chất sau: ethylamine; aniline; dimethylamine; trimethylamine. Số chất amine bậc 2 là", opts: ["4.", "2.", "1.", "3."], ans: 2, explanation: "Chỉ có 1 chất là dimethylamine (CH₃NHCH₃)." },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 14 (Trang 75). Chất nào sau đây là amine bậc 3?", opts: ["C₂H₅NH₂.", "CH₃NHCH₃.", "Aniline.", "(CH₃)₃N."], ans: 3 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 15 (Trang 75). Methylamine là tên gọi của chất nào dưới đây?", opts: ["CH₃Cl.", "CH₃NH₂.", "CH₃OH.", "CH₃CH₂NH₂."], ans: 1 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 16 (Trang 75). Công thức phân tử của dimethylamine là", opts: ["C₂H₈N₂.", "C₂H₇N.", "C₄H₁₁N.", "C₂H₆N₂."], ans: 1 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 17 (Trang 75). Benzylamine có công thức phân tử là", opts: ["C₆H₇N.", "C₇H₉N.", "C₇H₇N.", "C₇H₈N."], ans: 1, explanation: "Benzylamine có công thức C₆H₅CH₂NH₂ (C₇H₉N)." },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 18 (Trang 75). N-methylethanamine có công thức là", opts: ["C₂H₅NHCH₃.", "CH₃NHCH₃.", "CH₃NH₂.", "CH₃NH₂C₂H₅."], ans: 0 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 19 (Trang 75). Ứng với CTPT C₃H₉N sẽ có số đồng phân là", opts: ["5.", "4.", "2.", "3."], ans: 1, explanation: "Gồm 2 đồng phân bậc 1, 1 đồng phân bậc 2 và 1 đồng phân bậc 3." },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 20 (Trang 75). Có bao nhiêu amine bậc 2 có cùng công thức phân tử C₄H₁₁N?", opts: ["3.", "8.", "4.", "1."], ans: 0, explanation: "Gồm: CH₃NHCH₂CH₂CH₃, CH₃NHCH(CH₃)₂ và C₂H₅NHC₂H₅." },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 21 (Trang 75). Số đồng phân cấu tạo ứng với amine có công thức phân tử C₄H₁₁N là", opts: ["7.", "6.", "8.", "5."], ans: 2, explanation: "Gồm 4 bậc 1 + 3 bậc 2 + 1 bậc 3 = 8 đồng phân." },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 22 (Trang 75). Để khử mùi tanh của cá (gây ra do một số amine) ta có thể rửa cá với:", opts: ["Nước.", "Nước muối.", "Cồn.", "Giấm."], ans: 3 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 23 (Trang 75). Danh pháp IUPAC của CH₃NHCH₂CH₂CH₃ là", opts: ["Methylpropylamine.", "N-methylpropan-1-amine.", "N-methylpropan-3-amine.", "N-propylmethanamine."], ans: 1 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 24 (Trang 75). Amine nào sau đây không làm đổi màu giấy quỳ?", opts: ["Aniline.", "Ethylamine.", "Methylamine.", "Dimethylamine."], ans: 0 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 25 (Trang 75). Thêm ethylamine dư vào dung dịch CuSO₄ đến phản ứng hoàn toàn thu được", opts: ["Kết tủa màu xanh nhạt.", "Dung dịch màu xanh lam.", "Kết tủa màu xanh đậm.", "Dung dịch màu xanh nhạt."], ans: 1, explanation: "Ban đầu tạo kết tủa Cu(OH)₂ xanh nhạt, sau đó kết tủa tan trong ethylamine dư tạo phức màu xanh lam." },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 26 (Trang 75-76). Thêm methylamine dư vào dung dịch FeCl₃ đến khi phản ứng xảy ra hoàn toàn thu được", opts: ["Kết tủa màu đỏ nâu.", "Dung dịch màu vàng nâu.", "Kết tủa màu vàng nâu.", "Dung dịch màu đỏ nâu."], ans: 0 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 27 (Trang 76). Amine không được sử dụng trong lĩnh vực nào sau đây?", opts: ["Dược phẩm.", "Thuốc nhuộm.", "Công nghiệp polymer.", "Công nghiệp silicate."], ans: 3 },
+      { type: "mcq", topicName: TOPIC_1, q: "Câu 28 (
