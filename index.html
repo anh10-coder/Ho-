@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đề Cương Hóa Học 12 - Chương 3: Hợp Chất Chứa Nitrogen</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 10px;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .header-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      font-size: 1.12rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+      text-align: center;
+      text-transform: uppercase;
+      line-height: 1.35;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.83rem;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .filter-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .filter-group { grid-template-columns: 1fr 1fr 1fr; }
+      body { padding: 16px; }
+      h1 { font-size: 1.28rem; }
+    }
+
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    select, button {
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      transition: all 0.15s ease;
+      min-height: 42px;
+    }
+
+    select { background-color: #fff; color: var(--text); width: 100%; }
+    .btn-primary { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-outline { background-color: #fff; color: var(--text); }
+    .btn-warning { background-color: #f59e0b; color: #fff; border-color: #f59e0b; }
+
+    .stats-bar {
+      position: sticky;
+      top: 6px;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .stat-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+    .stat-badge { padding: 4px 8px; border-radius: 6px; background: #f1f5f9; }
+    .stat-correct { color: var(--success); background: var(--success-bg); }
+    .stat-wrong { color: var(--danger); background: var(--danger-bg); }
+    .stat-score { color: var(--primary); background: #dbeafe; }
+
+    .question-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .card-header-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }
+    .topic-tag { font-size: 0.73rem; font-weight: 700; color: var(--primary); background: #eff6ff; padding: 3px 8px; border-radius: 5px; }
+    .type-tag { font-size: 0.73rem; font-weight: 700; color: #7c3aed; background: #f3e8ff; padding: 3px 8px; border-radius: 5px; }
+    .type-tag.sa-tag { color: #0f766e; background: #ccfbf1; }
+
+    .question-text { font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; white-space: pre-line; }
+
+    .image-note-box {
+      background: #fffbeb;
+      border: 1.5px dashed #f59e0b;
+      border-radius: 9px;
+      padding: 9px 12px;
+      margin-bottom: 10px;
+      font-size: 0.86rem;
+      color: #92400e;
+      line-height: 1.45;
+    }
+
+    .svg-box {
+      width: 100%;
+      overflow-x: auto;
+      margin-bottom: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .svg-box svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .options-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .option-btn {
+      text-align: left;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 0.92rem;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      width: 100%;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .option-btn.selected { border-color: var(--primary); background: #dbeafe; font-weight: 700; }
+    .option-btn.correct { border-color: var(--success) !important; background: var(--success-bg) !important; color: #14532d !important; font-weight: 700; }
+    .option-btn.wrong { border-color: var(--danger) !important; background: var(--danger-bg) !important; color: #7f1d1d !important; }
+
+    .tf-list { display: flex; flex-direction: column; gap: 9px; }
+
+    .tf-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 11px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+    }
+
+    @media (min-width: 600px) {
+      .tf-row { flex-direction: row; justify-content: space-between; align-items: center; }
+    }
+
+    .tf-row.row-correct { border-color: var(--success); background: #f0fdf4; }
+    .tf-row.row-wrong { border-color: var(--danger); background: #fef2f2; }
+    .tf-statement { font-size: 0.92rem; flex: 1; }
+    .tf-buttons { display: flex; gap: 8px; width: 100%; }
+    @media (min-width: 600px) { .tf-buttons { width: auto; flex-shrink: 0; } }
+
+    .tf-btn {
+      flex: 1;
+      min-width: 74px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      color: var(--text);
+    }
+
+    .tf-btn.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .tf-btn.correct-choice { background: var(--success) !important; color: #fff !important; border-color: var(--success) !important; }
+    .tf-btn.wrong-choice { background: var(--danger) !important; color: #fff !important; border-color: var(--danger) !important; }
+
+    .sa-wrapper { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px; }
+    .sa-wrapper.sa-correct { border-color: var(--success); background: #f0fdf4; }
+    .sa-wrapper.sa-wrong { border-color: var(--danger); background: #fef2f2; }
+    .sa-input-row { display: flex; gap: 8px; align-items: center; }
+    .sa-input {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      outline: none;
+      background: #fff;
+    }
+    .sa-input:focus { border-color: var(--primary); }
+
+    .feedback { margin-top: 10px; font-size: 0.88rem; font-weight: 600; padding: 9px 12px; border-radius: 8px; display: none; }
+    .feedback.show { display: block; }
+    .feedback.ok { color: var(--success); background: var(--success-bg); }
+    .feedback.partial { color: var(--warning); background: var(--warning-bg); }
+    .feedback.err { color: var(--danger); background: var(--danger-bg); }
+
+    .explanation-box {
+      margin-top: 9px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      font-size: 0.87rem;
+      color: #1e3a8a;
+      line-height: 1.5;
+      white-space: pre-line;
+      display: none;
+    }
+    .explanation-box.show { display: block; }
+    .explanation-title { font-weight: 700; color: var(--primary); margin-bottom: 3px; }
+
+    .bottom-tool-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 16px;
+      margin-bottom: 40px;
+      border: 2px dashed var(--primary);
+      text-align: center;
+    }
+    .bottom-tool-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .bottom-tool-desc { font-size: 0.84rem; color: var(--muted); margin-bottom: 12px; }
+    .bottom-tool-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+    .floating-top-btn {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      z-index: 50;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      display: none;
+    }
+    .floating-top-btn.visible { display: inline-flex; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-card">
+      <h1>ĐỀ CƯƠNG HÓA HỌC 12 - CHƯƠNG 3: HỢP CHẤT CHỨA NITROGEN</h1>
+      <div class="subtitle">Trường THPT Dương Văn Thì (Trang 74 - 108) • Amine • Amino acid & Peptide • Protein & Enzyme • Ôn tập</div>
+
+      <div class="controls">
+        <div class="filter-group">
+          <select id="topicSelect" onchange="initQuiz(false)">
+            <option value="all">Tất cả 4 phần (Trang 74 - 108)</option>
+            <option value="0">PHẦN 1: AMINE (Trang 74 - 79)</option>
+            <option value="1">PHẦN 2: AMINO ACID & PEPTIDE (Trang 82 - 90)</option>
+            <option value="2">PHẦN 3: PROTEIN & ENZYME (Trang 91 - 101)</option>
+            <option value="3">PHẦN 4: ÔN TẬP CHƯƠNG (Trang 103 - 108)</option>
+          </select>
+
+          <select id="typeSelect" onchange="initQuiz(false)">
+            <option value="all">Tất cả dạng câu hỏi (166 câu)</option>
+            <option value="mcq">Phần II: Trắc nghiệm A, B, C, D</option>
+            <option value="tf">Phần III: Trắc nghiệm Đúng / Sai</option>
+            <option value="sa">Phần IV: Trả lời ngắn</option>
+          </select>
+
+          <select id="modeSelect" onchange="initQuiz(false)">
+            <option value="instant">Chế độ: Làm câu nào biết đúng/sai ngay</option>
+            <option value="exam">Chế độ: Làm hết rồi bấm Chấm điểm</option>
+          </select>
+        </div>
+
+        <div class="action-group">
+          <button class="btn-primary" id="submitBtn" onclick="submitExam()" style="display:none;">Nộp bài & Chấm điểm</button>
+          <button class="btn-warning" id="retryWrongBtn" onclick="retryWrong()" style="display:none;">Làm lại câu sai / thiếu điểm</button>
+          <button class="btn-outline" onclick="initQuiz(true)">🔀 Đảo câu & Đảo đáp án</button>
+          <button class="btn-outline" onclick="initQuiz(false)">🔄 Làm lại từ đầu (Gốc)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <span id="progressText">Đã làm: 0 / 0</span>
+      <div class="stat-group">
+        <span class="stat-badge stat-correct" id="correctText">Tối đa: 0</span>
+        <span class="stat-badge stat-wrong" id="wrongText">Chưa tối đa: 0</span>
+        <span class="stat-badge stat-score" id="scoreText">Điểm: 0.00 / 0.00</span>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <div class="bottom-tool-card">
+      <div class="bottom-tool-title">Công cụ cuối trang - Hóa học 12</div>
+      <div class="bottom-tool-desc">Sử dụng các nút bên dưới để nộp bài, đảo câu kèm đáp án hoặc cuộn nhanh lên đầu trang.</div>
+      <div class="bottom-tool-actions">
+        <button class="btn-primary" id="bottomSubmitBtn" onclick="submitExam()" style="display:none;">Nộp bài & Chấm điểm ngay</button>
+        <button class="btn-warning" id="bottomRetryBtn" onclick="retryWrong()" style="display:none;">Làm lại câu sai / thiếu điểm</button>
+        <button class="btn-outline" onclick="initQuiz(true)">🔀 Đảo câu & Đảo đáp án</button>
+        <button class="btn-primary" onclick="scrollToTopFast()">⚡ Lên đầu trang</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="floating-top-btn" id="floatingTopBtn" onclick="scrollToTopFast()">⬆ Đầu trang</button>
+
+  <script>
+    window.onerror = function(msg, url, line) {
+      var c = document.getElementById("quizContainer");
+      if (c) c.innerHTML = '<div class="question-card" style="color:#dc2626;font-weight:700;">Lỗi JS: ' + msg + ' (Dòng ' + line + ')</div>';
+    };
+  </script>
+
+  <script>
+    var TOPICS = [
+      "PHẦN 1: AMINE (Trang 74 - 79)",
+      "PHẦN 2: AMINO ACID & PEPTIDE (Trang 82 - 90)",
+      "PHẦN 3: PROTEIN & ENZYME (Trang 91 - 101)",
+      "PHẦN 4: ÔN TẬP CHƯƠNG (Trang 103 - 108)"
+    ];
+    var LETTERS = ["A", "B", "C", "D"];
+    var SUB_LETTERS = ["a", "b", "c", "d"];
+    var TF_POINTS = [0, 0.1, 0.25, 0.5, 1.0];
+
+    function makeSvgTable(headers, rows, widths) {
+      var totalW = 0;
+      for (var i = 0; i < widths.length; i++) totalW += widths[i];
+      var rowH = 36;
+      var totalH = (rows.length + 1) * rowH;
+      var s = '<div class="svg-box"><svg viewBox="0 0 ' + totalW + ' ' + totalH + '" width="' + totalW + '" height="' + totalH + '" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="13">';
+      s += '<rect x="0" y="0" width="' + totalW + '" height="' + rowH + '" fill="#e2e8f0"/>';
+      s += '<rect x="0" y="' + rowH + '" width="' + totalW + '" height="' + (rows.length * rowH) + '" fill="#ffffff"/>';
+
+      var cx = 0;
+      for (var c = 0; c < headers.length; c++) {
+        var w = widths[c];
+        s += '<text x="' + (cx + w / 2) + '" y="23" text-anchor="middle" font-weight="bold" fill="#0f172a">' + headers[c] + '</text>';
+        cx += w;
+      }
+
+      for (var r = 0; r < rows.length; r++) {
+        var y = (r + 1) * rowH;
+        s += '<line x1="0" y1="' + y + '" x2="' + totalW + '" y2="' + y + '" stroke="#cbd5e1" stroke-width="1"/>';
+        var rx = 0;
+        for (var k = 0; k < rows[r].length; k++) {
+          var kw = widths[k];
+          s += '<text x="' + (rx + kw / 2) + '" y="' + (y + 23) + '" text-anchor="middle" fill="#1e293b">' + rows[r][k] + '</text>';
+          rx += kw;
+        }
+      }
+
+      var vx = 0;
+      for (var v = 0; v < widths.length - 1; v++) {
+        vx += widths[v];
+        s += '<line x1="' + vx + '" y1="0" x2="' + vx + '" y2="' + totalH + '" stroke="#cbd5e1" stroke-width="1"/>';
+      }
+      s += '<rect x="0" y="0" width="' + totalW + '" height="' + totalH + '" fill="none" stroke="#94a3b8" stroke-width="1.5"/>';
+      s += '</svg></div>';
+      return s;
+    }
+
+    function renderSvgTableByCode(code) {
+      if (code === "tbl_p1_c34") {
+        return makeSvgTable(
+          ["Chất", "Thuốc thử", "Hiện tượng"],
+          [
+            ["X", "Quỳ tím", "Quỳ tím chuyển màu xanh"],
+            ["Y", "Dung dịch AgNO₃/NH₃, t°", "Tạo kết tủa Ag"],
+            ["Z", "Nước bromine", "Tạo kết tủa trắng"]
+          ],
+          [70, 200, 230]
+        );
+      }
+      if (code === "tbl_p2_c33") {
+        return makeSvgTable(
+          ["pH", "4,0", "7,6", "12,0"],
+          [
+            ["Dạng tồn tại", "Dạng (I)", "Dạng (II)", "Dạng (III)"]
+          ],
+          [110, 130, 130, 130]
+        );
+      }
+      if (code === "tbl_p2_c34") {
+        return makeSvgTable(
+          ["Chất", "Thuốc thử", "Hiện tượng"],
+          [
+            ["X", "Quỳ tím", "Quỳ tím chuyển màu hồng"],
+            ["Y", "Dung dịch AgNO₃ trong NH₃", "Tạo kết tủa Ag"],
+            ["Z", "Nước bromine", "Tạo kết tủa trắng"]
+          ],
+          [70, 210, 220]
+        );
+      }
+      if (code === "tbl_p4_c35") {
+        return makeSvgTable(
+          ["Amino acid", "Alanine", "Lysine", "Glutamic acid", "Histidine", "Aspartic acid"],
+          [["pH", "6,0", "9,7", "3,2", "7,6", "2,8"]],
+          [100, 80, 80, 105, 85, 100]
+        );
+      }
+      return "";
+    }
+
+    var RAW_QUESTIONS = [
+      // ==================== PHẦN 1: AMINE (TRANG 74 - 79) ====================
+      { t: 0, ty: "mcq", q: "Câu 7 (Trang 74). Nhóm chức trong amine là", o: ["-OH.", "-NH₂.", "-COOH.", "-CHO."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 8 (Trang 74). Amine là dẫn xuất của:", o: ["Methane.", "Ammonia.", "Ethanol.", "Acetic acid."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 9 (Trang 74). Amine nào sau đây là chất lỏng ở nhiệt độ phòng?", o: ["Methylamine.", "Ethylamine.", "Dimethylamine.", "Aniline."], a: 3 },
+      { t: 0, ty: "mcq", q: "Câu 10 (Trang 74). Chất nào sau đây thuộc loại amine bậc một?", o: ["CH₃NHCH₃.", "CH₃CH₂NHCH₃.", "CH₃NH₂.", "(CH₃)₃N."], a: 2 },
+      { t: 0, ty: "mcq", q: "Câu 11 (Trang 74). Trong các chất dưới đây, chất nào là amine bậc hai?", o: ["H₂N(CH₂)₆NH₂.", "CH₃NHCH₃.", "CH₃CH(CH₃)NH₂.", "C₆H₅NH₂."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 12 (Trang 74). Amine có cấu tạo CH₃CH₂CH(NH₂)CH₃ là amine", o: ["bậc 3.", "bậc 2.", "bậc 1.", "bậc 4."], a: 2, e: "Nguyên tử N liên kết với 1 gốc hydrocarbon (nhóm -NH₂) nên là amine bậc 1." },
+      { t: 0, ty: "mcq", q: "Câu 13 (Trang 74). Cho các chất sau: ethylamine; aniline; dimethylamine; trimethylamine. Số chất amine bậc 2 là", o: ["4.", "2.", "1.", "3."], a: 2, e: "Chỉ có 1 chất là dimethylamine (CH₃NHCH₃)." },
+      { t: 0, ty: "mcq", q: "Câu 14 (Trang 75). Chất nào sau đây là amine bậc 3?", o: ["C₂H₅NH₂.", "CH₃NHCH₃.", "Aniline.", "(CH₃)₃N."], a: 3 },
+      { t: 0, ty: "mcq", q: "Câu 15 (Trang 75). Methylamine là tên gọi của chất nào dưới đây?", o: ["CH₃Cl.", "CH₃NH₂.", "CH₃OH.", "CH₃CH₂NH₂."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 16 (Trang 75). Công thức phân tử của dimethylamine là", o: ["C₂H₈N₂.", "C₂H₇N.", "C₄H₁₁N.", "C₂H₆N₂."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 17 (Trang 75). Benzylamine có công thức phân tử là", o: ["C₆H₇N.", "C₇H₉N.", "C₇H₇N.", "C₇H₈N."], a: 1, e: "Benzylamine là C₆H₅CH₂NH₂ (C₇H₉N)." },
+      { t: 0, ty: "mcq", q: "Câu 18 (Trang 75). N-methylethanamine có công thức là", o: ["C₂H₅NHCH₃.", "CH₃NHCH₃.", "CH₃NH₂.", "CH₃NH₂C₂H₅."], a: 0 },
+      { t: 0, ty: "mcq", q: "Câu 19 (Trang 75). Ứng với CTPT C₃H₉N sẽ có số đồng phân là", o: ["5.", "4.", "2.", "3."], a: 1, e: "Gồm 4 đồng phân: 2 bậc 1, 1 bậc 2, 1 bậc 3." },
+      { t: 0, ty: "mcq", q: "Câu 20 (Trang 75). Có bao nhiêu amine bậc 2 có cùng công thức phân tử C₄H₁₁N?", o: ["3.", "8.", "4.", "1."], a: 0, e: "Gồm 3 đồng phân: CH₃NHCH₂CH₂CH₃, CH₃NHCH(CH₃)₂ và C₂H₅NHC₂H₅." },
+      { t: 0, ty: "mcq", q: "Câu 21 (Trang 75). Số đồng phân cấu tạo ứng với amine có công thức phân tử C₄H₁₁N là", o: ["7.", "6.", "8.", "5."], a: 2, e: "Gồm 4 bậc 1 + 3 bậc 2 + 1 bậc 3 = 8 đồng phân." },
+      { t: 0, ty: "mcq", q: "Câu 22 (Trang 75). Để khử mùi tanh của cá (gây ra do một số amine) ta có thể rửa cá với:", o: ["Nước.", "Nước muối.", "Cồn.", "Giấm."], a: 3 },
+      { t: 0, ty: "mcq", q: "Câu 23 (Trang 75). Danh pháp IUPAC của CH₃NHCH₂CH₂CH₃ là", o: ["Methylpropylamine.", "N-methylpropan-1-amine.", "N-methylpropan-3-amine.", "N-propylmethanamine."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 24 (Trang 75). Amine nào sau đây không làm đổi màu giấy quỳ?", o: ["Aniline.", "Ethylamine.", "Methylamine.", "Dimethylamine."], a: 0 },
+      { t: 0, ty: "mcq", q: "Câu 25 (Trang 75). Thêm ethylamine dư vào dung dịch CuSO₄ đến phản ứng hoàn toàn thu được", o: ["Kết tủa màu xanh nhạt.", "Dung dịch màu xanh lam.", "Kết tủa màu xanh đậm.", "Dung dịch màu xanh nhạt."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 26 (Trang 75-76). Thêm methylamine dư vào dung dịch FeCl₃ đến khi phản ứng xảy ra hoàn toàn thu được", o: ["Kết tủa màu đỏ nâu.", "Dung dịch màu vàng nâu.", "Kết tủa màu vàng nâu.", "Dung dịch màu đỏ nâu."], a: 0 },
+      { t: 0, ty: "mcq", q: "Câu 27 (Trang 76). Amine không được sử dụng trong lĩnh vực nào sau đây?", o: ["Dược phẩm.", "Thuốc nhuộm.", "Công nghiệp polymer.", "Công nghiệp silicate."], a: 3 },
+      { t: 0, ty: "mcq", q: "Câu 28 (Trang 76). Các amine như CH₃NH₂, CH₃NHCH₃, CH₃CH₂NH₂, và NH₂CH₂NH₂ tan tốt trong nước vì:", o: ["Chúng tạo liên kết hydrogen với nước.", "Chúng tạo liên kết hydrogen với nhau.", "Chúng tạo lực van der Waals mạnh giữa các phân tử.", "Chúng là khí và dễ phân tán trong nước."], a: 0 },
+      { t: 0, ty: "mcq", q: "Câu 29 (Trang 76). Chất tạo phức với methylamine và ethylamine là", o: ["Ca(OH)₂.", "Cu(OH)₂.", "Al(OH)₃.", "KOH."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 30 (Trang 76). Sản phẩm của phản ứng giữa aniline và nước bromine là", o: ["Phenol.", "2,4,6-Tribromoaniline.", "2,4-Dibromoaniline.", "Benzenamine."], a: 1 },
+      { t: 0, ty: "mcq", q: "Câu 31 (Trang 76). Phản ứng nào sau đây có thể tạo ra methylamine?", o: ["Phản ứng của methyl iodide với NH₃.", "Phản ứng của methane với NH₃.", "Phản ứng của methanol với HCl.", "Phản ứng của methyl chloride với H₂O."], a: 0 },
+      { t: 0, ty: "mcq", q: "Câu 32 (Trang 76). Phản ứng của aniline với nitrous acid ở nhiệt độ thấp tạo thành:", o: ["Benzene.", "Phenol.", "Phenyldiazonium chloride.", "Phenylnitrosoamine."], a: 2 },
+      { t: 0, ty: "mcq", q: "Câu 33 (Trang 76). Amine nào phản ứng với nitrous acid tạo thành khí nitrogen?", o: ["Methylamine.", "Dimethylamine.", "Aniline.", "Trimethylamine."], a: 0 },
+      { t: 0, ty: "mcq", q: "Câu 34 (Trang 76-77). Kết quả thí nghiệm của các chất X, Y, Z với các thuốc thử được ghi ở bảng sau. Các chất X, Y, Z lần lượt là:", svg: "tbl_p1_c34", o: ["Aniline, glucose, ethylamine.", "Ethylamine, glucose, aniline.", "Ethylamine, aniline, glucose.", "Glucose, ethylamine, aniline."], a: 1 },
+
+      { t: 0, ty: "tf", q: "Câu 35 (Trang 77). Cho các phát biểu sau:", it: [["Tên gốc - chức của CH₃NHCH₂CH₃ là methylethylamine.", 0], ["Tên thay thế của CH₃NHCH₂CH₃ là N-methylethanamine.", 1], ["Methylamine là amine bậc một.", 1], ["Aniline là arylamine.", 1]], e: "Tên gốc - chức đúng theo thứ tự chữ cái là ethylmethylamine." },
+      { t: 0, ty: "tf", q: "Câu 36 (Trang 77). Cho các phát biểu sau:", it: [["Aniline có nhiệt độ sôi cao hơn methylamine.", 1], ["Dimethylamine là một chất khí ở nhiệt độ thường.", 1], ["Aniline không thể tham gia phản ứng thế nguyên tử hydrogen trong nhân thơm.", 0], ["Các amine có số nguyên tử carbon nhỏ thường tan tốt trong nước nhờ tạo được liên kết hydrogen với nước.", 1]] },
+      { t: 0, ty: "tf", q: "Câu 37 (Trang 77). Cho các phát biểu sau:", it: [["Aniline là một hợp chất thơm.", 1], ["Aniline không thể tham gia phản ứng thế brom trong vòng benzene.", 0], ["Khi thêm HCl vào dung dịch methylamine, màu hồng của phenolphthalein sẽ biến mất.", 1], ["Aniline có nhiệt độ sôi thấp hơn trimethylamine.", 0]] },
+      { t: 0, ty: "tf", q: "Câu 38 (Trang 77). Cho các phát biểu sau:", it: [["Dung dịch aniline làm quỳ tím chuyển sang màu xanh.", 0], ["Methylamine có thể làm quỳ tím đổi màu xanh.", 1], ["Aniline không thể tham gia phản ứng với nitrous acid.", 0], ["Amine bậc ba không thể tạo liên kết hydrogen với nước.", 0]] },
+      { t: 0, ty: "tf", q: "Câu 39 (Trang 77). Cho các phát biểu sau:", it: [["Methylamine không tạo được liên kết hydrogen với nước.", 0], ["Amine không thể phản ứng với dung dịch CuCl₂.", 0], ["Aniline dễ tham gia phản ứng thế trong vòng benzene hơn benzene.", 1], ["Aniline không thể tham gia phản ứng thế với nước bromine.", 0]] },
+      { t: 0, ty: "tf", q: "Câu 40 (Trang 78). Cho các phát biểu sau:", it: [["Dimethylamine là chất lỏng ở nhiệt độ thường.", 0], ["Dung dịch ethylamine không làm đổi màu quỳ tím.", 0], ["Khi thêm methylamine vào dung dịch CuSO₄, xuất hiện kết tủa màu xanh lam.", 1], ["Các amine có nhiệt độ sôi cao hơn hydrocarbon có cùng số nguyên tử carbon.", 1]] },
+      { t: 0, ty: "tf", q: "Câu 41 (Trang 78). Thí nghiệm tạo phức của methylamine:\n- Bước 1: Cho khoảng 2 mL dung dịch CuSO₄ 0,1 M vào ống nghiệm.\n- Bước 2: Thêm từ từ dung dịch methylamine 0,1 M vào ống nghiệm, lắc đều.", it: [["Sau bước 1 thu được kết tủa xanh lam.", 0], ["Sau bước 2 thu được dung dịch trong suốt, không màu.", 0], ["Nếu thay methylamine bằng ethylamine thì hiện tượng quan sát được sau bước 2 không đổi.", 1], ["Phản ứng trên thể hiện tính base của methylamine.", 1]] },
+
+      { t: 0, ty: "sa", q: "Câu 42 (Trang 78). Cho các chất: (1) CH₃NH₂, (2) CH₃NH₃Cl, (3) (NH₂)₂CO, (4) CH₃NHCH₃, (5) CH₃CH₂NH₂, (6) NH₂CH₂NH₂, (7) (CH₃)₃N, (8) C₆H₅NH₂ (aniline). Hãy sắp xếp các chất là amine bậc một trong các chất trên theo số thứ tự tăng dần (ví dụ 12, 134, ...)", a: ["1568", "1, 5, 6, 8", "1,5,6,8"], e: "Các amine bậc một gồm: (1), (5), (6), (8) → 1568." },
+      { t: 0, ty: "sa", q: "Câu 43 (Trang 78). Cho các amine: (1) methylamine, (2) dimethylamine, (3) phenylamine, (4) trimethylamine, (5) propylamine. Hãy sắp xếp các chất là alkylamine trong các chất trên theo số thứ tự tăng dần (ví dụ 12, 134, ...)", a: ["1245", "1, 2, 4, 5", "1,2,4,5"], e: "Các alkylamine gồm: (1), (2), (4), (5) → 1245." },
+      { t: 0, ty: "sa", q: "Câu 44 (Trang 78). Số đồng phân amine có công thức C₂H₇N là bao nhiêu?", a: ["2"], e: "Gồm 2 đồng phân: CH₃CH₂NH₂ và CH₃NHCH₃." },
+      { t: 0, ty: "sa", q: "Câu 45 (Trang 78). Nhỏ dung dịch của mỗi chất (1) methylamine, (2) ethylamine, (3) ammonia, (4) aniline vào các mẫu giấy quỳ tím riêng rẽ. Hãy sắp xếp các trường hợp mẫu giấy quỳ tím chuyển thành màu xanh theo số thứ tự tăng dần (ví dụ 12, 134, ...)", a: ["123", "1, 2, 3", "1,2,3"], e: "Các chất làm quỳ tím hóa xanh gồm (1), (2), (3) → 123." },
+      { t: 0, ty: "sa", q: "Câu 46 (Trang 78). Cho methylamine lần lượt tác dụng với (1) dung dịch HCl, (2) dung dịch FeCl₃, (3) dung dịch NaOH, (4) dung dịch Br₂, (5) HNO₂. Hãy sắp xếp các trường hợp xảy ra phản ứng theo số thứ tự tăng dần (ví dụ 12, 134, ...)", a: ["125", "1, 2, 5", "1,2,5"], e: "Methylamine phản ứng với (1) HCl, (2) FeCl₃, (5) HNO₂ → 125." },
+      { t: 0, ty: "sa", q: "Câu 47 (Trang 79). Cho X là methylamine. Lấy 3,1 gam X tác dụng hết với dung dịch HCl thì khối lượng muối thu được là bao nhiêu gam?", a: ["6.75", "6,75"], e: "n = 0,1 mol → m_muối = 0,1 × 67,5 = 6,75 gam." },
+      { t: 0, ty: "sa", q: "Câu 48 (Trang 79). Cho 9 gam ethylamine tác dụng vừa đủ với dung dịch HNO₂ thu được m gam alcohol. Giá trị của m là bao nhiêu?", a: ["9.2", "9,2"], e: "n = 0,2 mol → m_C₂H₅OH = 0,2 × 46 = 9,2 gam." },
+      { t: 0, ty: "sa", q: "Câu 49 (Trang 79). Cho 30 gam hỗn hợp hai amine đơn chức tác dụng vừa đủ với V mL dung dịch HCl 1,5 M, thu được dung dịch chứa 47,52 gam hỗn hợp muối. Giá trị của V là bao nhiêu mL?", a: ["320"], e: "n_HCl = (47,52 - 30) / 36,5 = 0,48 mol → V = 0,48 / 1,5 = 0,32 L = 320 mL." },
+      { t: 0, ty: "sa", q: "Câu 50 (Trang 79). Cho 0,1 mol aniline (C₆H₅-NH₂) tác dụng vừa đủ với dung dịch HCl. Khối lượng muối phenylammonium chloride thu được là", a: ["12.95", "12,95"], e: "m = 0,1 × 129,5 = 12,95 gam." },
+      { t: 0, ty: "sa", q: "Câu 51 (Trang 79). Kết quả phân tích nguyên tố của hợp chất amine thơm X có phần trăm khối lượng các nguyên tố như sau: %C = 78,51%; %H = 8,41%; %N = 13,08%. Từ phổ khối lượng (MS) xác định được phân tử khối của X bằng 107. Ứng với công thức phân tử của X, có bao nhiêu amine thơm bậc một, kể cả X?", a: ["3", "4"], e: "CTPT C₇H₉N có 3 đồng phân arylamine bậc một (o-, m-, p-toluidine)." },
+
+      // ==================== PHẦN 2: AMINO ACID & PEPTIDE (TRANG 82 - 90) ====================
+      { t: 1, ty: "mcq", q: "Câu 9 (Trang 82). Amino acid là những hợp chất hữu cơ chứa các nhóm chức:", o: ["carboxyl và hydroxyl.", "hydroxyl và amino.", "carboxyl và amino.", "carbonyl và amino."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 10 (Trang 82-83). Amino acid nào sau đây có hai nhóm amino và một nhóm carboxyl?", o: ["Lysine.", "Valine.", "Glutamic acid.", "Alanine."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 11 (Trang 83). Amino acid nào sau đây có một nhóm amino và hai nhóm carboxyl?", o: ["Lysine.", "Valine.", "Glutamic acid.", "Alanine."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 12 (Trang 83). Amino acid X có phân tử khối bằng 89. Tên gọi của X là", o: ["Glycine.", "Lysine.", "Alanine.", "Valine."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 13 (Trang 83). Alanine có công thức cấu tạo thu gọn là", o: ["H₂NCH₂COOH.", "CH₃CH(NH₂)COOH.", "H₂NCH₂CH(NH₂)COOH.", "H₂NCH₂CH₂COOH."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 14 (Trang 83). Valine có công thức phân tử là", o: ["C₃H₇NO₂.", "C₄H₉NO₂.", "C₅H₁₁NO₂.", "C₆H₁₃NO₂."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 15 (Trang 83). Hợp chất hữu cơ X có công thức: H₂N–CH₂–COOH. X có tên gọi là", o: ["Glycine.", "Lysine.", "Valine.", "Alanine."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 16 (Trang 83). Phần trăm khối lượng nitrogen trong phân tử alanine bằng", o: ["15,05%.", "15,73%.", "12,96%.", "18,67%."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 17 (Trang 83). Số nguyên tử hydrogen có trong một phân tử Lysine là", o: ["10.", "14.", "12.", "8."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 18 (Trang 83). Tổng số nguyên tử hydrogen trong một phân tử glutamic acid là", o: ["10.", "8.", "7.", "9."], a: 3 },
+      { t: 1, ty: "mcq", q: "Câu 19 (Trang 83). H₂NCH₂COOH có tên bán hệ thống là", o: ["acid 2-aminoethanoic.", "acid α-aminopropionic.", "acid aminoacetic.", "Glycine."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 20 (Trang 83). CH₃CH(NH₂)COOH có tên bán hệ thống là", o: ["2-aminoethanoic acid.", "α-aminopropionic acid.", "aminoacetic acid.", "Alanine."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 21 (Trang 83). X là một α-amino acid có công thức phân tử C₃H₇O₂N. Công thức cấu tạo của X là:", o: ["H₂NCH(CH₃)COOH.", "H₂NCH₂CH₂COOH.", "H₂NCH₂COOCH₃.", "CH₂=CH–COONH₄."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 22 (Trang 83-84). Trong dung dịch H₂N-CH₂-COOH tồn tại chủ yếu ở dạng:", o: ["Anion.", "Cation.", "Phân tử trung hòa.", "Ion lưỡng cực."], a: 3 },
+      { t: 1, ty: "mcq", q: "Câu 23 (Trang 84). Chất nào có nhiệt độ nóng chảy cao nhất trong các chất sau:", o: ["CH₂(NH₂)COOH.", "CH₃CH₂OH.", "CH₃CH₂NH₂.", "CH₃COOCH₃."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 24 (Trang 84). Để chứng minh tính lưỡng tính của: NH₂-CH₂-COOH (X), ta cho X tác dụng với", o: ["Na₂CO₃, HCl.", "HCl, NaOH.", "HNO₃, CH₃COOH.", "NaOH, NH₃."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 25 (Trang 84). Chất nào sau đây vừa có phản ứng với H₂NCH(CH₃)COOH vừa có phản ứng với C₂H₅NH₂?", o: ["CH₃OH.", "NaOH.", "HCl.", "NaCl."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 26 (Trang 84). Chất nào sau đây vừa phản ứng được với NaOH vừa phản ứng được với HCl?", o: ["C₂H₅OH.", "C₆H₅NH₂.", "NH₂-CH₂-COOH.", "CH₃COOH."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 27 (Trang 84). Ở pH = 10, amino acid nào chủ yếu tồn tại dạng ion lưỡng cực?", o: ["CH₃CH(NH₂)COOH.", "H₂NCH₂CH(NH₂)COOH.", "H₂NCH₂COOH.", "HOOCCH₂CH(NH₂)COOH."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 28 (Trang 84). Tại pH = 6, amino acid nào nhận proton trở thành cation và di chuyển về phía cực âm?", o: ["Lysine.", "Glycine.", "Glutamic acid.", "Alanine."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 29 (Trang 84). Tại pH = 6, amino acid nào nhường proton trở thành anion và di chuyển về phía cực dương?", o: ["Lysine.", "Glycine.", "Glutamic acid.", "Alanine."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 30 (Trang 84). Để phân biệt 3 dung dịch H₂NCH₂COOH, CH₃COOH, C₂H₅NH₂ ta cần dùng thuốc thử nào sau đây?", o: ["Dung dịch HCl.", "Dung dịch NaOH.", "Sodium.", "Quỳ tím."], a: 3 },
+      { t: 1, ty: "mcq", q: "Câu 31 (Trang 84-85). Cho sơ đồ chuyển hóa sau: Alanine --(+HCl)--> X --(+NaOH dư)--> Y. Chất Y là chất nào sau đây?", o: ["H₂N-CH₂-CH₂-COOH.", "CH₃-CH(NH₃Cl)-COONa.", "CH₃-CH(NH₃Cl)-COOH.", "CH₃-CH(NH₂)-COONa."], a: 3 },
+      { t: 1, ty: "mcq", q: "Câu 32 (Trang 85). Dung dịch của chất nào sau đây có môi trường base?", note: "📌 Chú thích hình ảnh: Xem hình 4 công thức A, B, C, D tại Trang 85 - Câu 32 trong đề cương.", o: ["Hình A (Lysine).", "Hình B (Valine).", "Hình C (Alanine).", "Hình D (Glutamic acid)."], a: 0, e: "Lysine có 2 nhóm amino và 1 nhóm carboxyl nên dung dịch có môi trường base." },
+      { t: 1, ty: "mcq", q: "Câu 33 (Trang 85). Histidine là một trong những amino acid thiết yếu đối với cơ thể con người. Với mỗi môi trường có giá trị pH bằng 4,0 ; 7,6 ; 12,0, coi histidine chỉ tồn tại ở dạng cho ở bảng dưới đây.\nCho các nhận định sau về quá trình điện di của histidine:\n(a) Với môi trường pH = 7,6 thì dạng (II) hầu như không dịch chuyển về các điện cực.\n(b) Với môi trường pH = 4,0 thì dạng (I) di chuyển về phía cực âm.\n(c) Với môi trường pH = 12,0 thì dạng (III) di chuyển về phía cực dương.\n(d) Với môi trường pH = 7,6 thì dạng (II) di chuyển về phía cực âm.\nCác nhận định đúng là:", note: "📌 Chú thích hình ảnh: Xem công thức cấu tạo của Dạng (I), Dạng (II), Dạng (III) trong bảng tại Trang 85 - Câu 33 trong đề cương.", svg: "tbl_p2_c33", o: ["(a), (b), (d).", "(a), (c), (d).", "(b), (c), (d).", "(a), (b), (c)."], a: 3 },
+      { t: 1, ty: "mcq", q: "Câu 34 (Trang 85). Kết quả thí nghiệm của các chất X, Y, Z với các thuốc thử được ghi ở bảng sau. Các chất X, Y, Z lần lượt là:", svg: "tbl_p2_c34", o: ["Ethyl formate, glutamic acid, aniline.", "Glutamic acid, ethyl formate, aniline.", "Aniline, ethyl formate, glutamic acid.", "Glutamic acid, aniline, ethyl formate."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 35 (Trang 85). Loại liên kết được hình thành giữa các amino acid trong peptide gọi là?", o: ["Liên kết ion.", "Liên kết hydrogen.", "Liên kết peptide.", "Liên kết cộng hóa trị."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 36 (Trang 86). Peptide là các hợp chất hữu cơ được hình thành từ các", o: ["đơn vị glucose.", "acid béo.", "đơn vị α-amino acid.", "đơn vị hydrocarbon."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 37 (Trang 86). Chất nào dưới đây là dipeptide?", o: ["Gly-Ala.", "Gly-Ala-Val.", "Gly-Gly-Ala-Val.", "Val."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 38 (Trang 86). Chất nào sau đây là dipeptide?", o: ["Gly-Ala-Gly.", "Gly-Ala.", "Gly-Ala-Ala.", "Ala-Gly-Gly."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 39 (Trang 86). Chất nào sau đây là tripeptide?", o: ["Gly-Gly.", "Gly-Ala.", "Ala-Ala-Gly.", "Ala-Gly."], a: 2 },
+      { t: 1, ty: "mcq", q: "Câu 40 (Trang 86). Số liên kết peptide trong phân tử peptide Gly-Ala-Gly là", o: ["4.", "3.", "1.", "2."], a: 3 },
+      { t: 1, ty: "mcq", q: "Câu 41 (Trang 86). Mỗi chuỗi polypeptide gồm các đơn vị...(1)... liên kết với nhau qua...(2)... theo một trật tự nhất định. Các cụm từ phù hợp cho mỗi khoảng trống trong câu trên lần lượt là", o: ["α-amino acid và liên kết peptide.", "monosaccharide và liên kết glycoside.", "β-amino acid và liên kết glycoside.", "monosaccharide và liên kết peptide."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 42 (Trang 86). Peptide bị thủy phân hoàn toàn nhờ xúc tác enzyme tạo thành các", o: ["alcohol.", "α-amino acid.", "amine.", "anđehit."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 43 (Trang 86). Dung dịch Ala-Gly phản ứng được với dung dịch nào sau đây?", o: ["HCl.", "KNO₃.", "NaCl.", "NaNO₃."], a: 0 },
+      { t: 1, ty: "mcq", q: "Câu 44 (Trang 86). Trong môi trường kiềm, tripeptide tác dụng với Cu(OH)₂ cho hợp chất màu", o: ["vàng.", "tím.", "xanh.", "đỏ."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 45 (Trang 86). Thủy phân tripeptide X bằng xúc tác enzyme thu được hỗn hợp gồm alanine, lysine và glutamic acid. Đặt hỗn hợp sản phẩm trong điện trường ở pH = 6,0. Phát biểu nào sau đây về sự di chuyển của các amino acid dưới tác dụng của điện trường là đúng?", o: ["Cả ba amino acid đều di chuyển về phía cực âm.", "Cả ba amino acid đều di chuyển về phía cực dương.", "Có hai amino acid di chuyển về phía cực âm.", "Một amino acid không di chuyển; mỗi một điện cực có một amino acid di chuyển về."], a: 3 },
+      { t: 1, ty: "mcq", q: "Câu 46 (Trang 87). Cho peptide X có công thức cấu tạo như hình vẽ. Khi thủy phân hoàn toàn X trong môi trường NaOH thu được sản phẩm hữu cơ có công thức là", note: "📌 Chú thích hình ảnh: Xem hình công thức cấu tạo của peptide X tại Trang 87 - Câu 46 trong đề cương.", o: ["H₂NCH(CH₃)COOH và H₂NCH₂COOH.", "H₂NCH(CH₃)COONa và H₂NCH₂COONa.", "H₂NCH(CH₃)COONa và H₂NCH₂COOH.", "H₂NCH(CH₃)COOH và H₂NCH₂COONa."], a: 1 },
+      { t: 1, ty: "mcq", q: "Câu 47 (Trang 87). Thủy phân không hoàn toàn tetrapeptide X mạch hở, thu được hỗn hợp sản phẩm có Gly-Ala, Phe-Val và Ala-Phe. Cấu tạo của X là", o: ["Gly-Ala-Val-Phe.", "Ala-Val-Phe-Gly.", "Val-Phe-Gly-Ala.", "Gly-Ala-Phe-Val."], a: 3 },
+
+      { t: 1, ty: "tf", q: "Câu 48 (Trang 87). Cho các phát biểu sau về amino acid:", it: [["Amino acid là hợp chất hữu cơ tạp chức, chứa đồng thời nhóm amino (-NH₂) và nhóm carboxyl (-COOH).", 1], ["Các amino acid thiên nhiên hầu hết là α-amino acid (công thức chung có dạng H₂N-CH(R)-COOH).", 1], ["Tất cả các amino acid tiêu chuẩn trong cơ thể người đều có thể tự tổng hợp.", 0], ["Amino acid tiêu chuẩn không bao gồm amino acid thiết yếu.", 0]] },
+      { t: 1, ty: "tf", q: "Câu 49 (Trang 87). Cho các phát biểu sau về amino acid:", it: [["Amino acid có tính lưỡng tính, vừa có thể phản ứng với acid mạnh vừa có thể phản ứng với base mạnh.", 1], ["Ở pH thấp, amino acid tồn tại chủ yếu dưới dạng anion.", 0], ["Amino acid có thể di chuyển trong điện trường tùy thuộc vào pH của môi trường.", 1], ["Ở pH = 3, glycine nhận proton, trở thành cation và có khả năng di chuyển về phía cực âm.", 1]] },
+      { t: 1, ty: "tf", q: "Câu 50 (Trang 87-88). Cho các phát biểu sau:", it: [["Lysine có thể tồn tại ở dạng ion lưỡng cực khi pH = 10.", 0], ["Glutamic acid nhường proton và di chuyển về phía cực dương ở pH = 6.", 1], ["Ở pH = 8 glycine không di chuyển trong điện trường.", 0], ["Ở pH thấp, glutamic acid nhận proton và di chuyển về cực dương.", 0]] },
+      { t: 1, ty: "tf", q: "Câu 51 (Trang 88). Cho các phát biểu sau:", it: [["Phản ứng trùng hợp ω-aminoenanthic acid thu được polyenanthamide.", 0], ["Ở pH = 10, glutamic acid di chuyển về phía cực âm.", 0], ["Phản ứng ester hóa của amino acid xảy ra ở nhiệt độ cao và có mặt xúc tác H₂SO₄ đặc.", 1], ["Các amino acid có thể tham gia vào quá trình hình thành protein trong cơ thể.", 1]] },
+      { t: 1, ty: "tf", q: "Câu 52 (Trang 88). Cho các phát biểu sau về amino acid:", it: [["Amino acid có thể phản ứng ester hóa với alcohol tạo thành ester.", 1], ["Amino acid có khả năng tham gia phản ứng trùng ngưng để tạo polyamide.", 1], ["Phản ứng trùng ngưng của amino acid xảy ra giữa nhóm -COOH của phân tử này và nhóm -NH₂ của phân tử amino acid khác.", 1], ["Phản ứng trùng ngưng ω-aminocaproic acid thu được polycaproamide (capron).", 1]] },
+      { t: 1, ty: "tf", q: "Câu 53 (Trang 88). Glutamic acid có cấu tạo HOOC–CH₂–CH₂–CH(NH₂)–COOH và có điểm đẳng điện pI = 3,2. Cho các phát biểu sau:", it: [["Glutamic acid thuộc loại hợp chất hữu cơ tạp chức, trong phân tử chứa hai loại nhóm chức.", 1], ["Tên thay thế của glutamic acid là 2-aminopentane-1,5-dioic acid.", 0], ["Trong dung dịch pH = 3,2, glutamic acid tồn tại chủ yếu ở dạng: HOOC–CH₂–CH₂–CH(NH₂)–COO⁻.", 0], ["Trong dung dịch pH = 6, có thể tách hỗn hợp gồm glutamic acid và lysine (pI = 9,7) bằng phương pháp điện di.", 1]], e: "Ở pH = 3,2, dạng lưỡng cực phải có nhóm -NH₃⁺." },
+      { t: 1, ty: "tf", q: "Câu 54 (Trang 88-89). Cho peptide X có tên gọi như sau: Gly – Val – Lys – Glu.", it: [["X thuộc loại tripeptide.", 0], ["Amino acid đầu C của X là Glu.", 1], ["X thủy phân không hoàn toàn có thể thu được tối đa 3 dipeptide.", 1], ["Có thể phân biệt X với các dipeptide bằng phản ứng màu biuret.", 1]] },
+      { t: 1, ty: "tf", q: "Câu 55 (Trang 89). Thí nghiệm về phản ứng màu biuret của peptide:\n- Bước 1: Cho khoảng 1 mL dung dịch NaOH 30% vào ống nghiệm, nhỏ thêm 2 – 3 giọt dung dịch CuSO₄ 2%, lắc đều.\n- Bước 2: Cho khoảng 4 mL dung dịch lòng trắng trứng (polypeptide) vào ống nghiệm, lắc đều.", it: [["Sau bước 1 thu được dung dịch xanh lam.", 0], ["Sau bước 2 thu được dung dịch màu tím.", 1], ["Nếu thay lòng trắng trứng (polypeptide) bằng các dipeptide khác thì hiện tượng sau bước 2 không đổi.", 0], ["Phản ứng này có thể dùng để phân biệt lòng trắng trứng với các dipeptide.", 1]] },
+      { t: 1, ty: "tf", q: "Câu 56 (Trang 89). Xét các phát biểu về peptide:", it: [["Tất cả các peptide đều có thể tạo phức chất màu tím với Cu(OH)₂ / NaOH.", 0], ["Dung dịch của dipeptide Ala-Gly không làm đổi màu quỳ tím.", 1], ["Từ 3 α-amino acid khác nhau có thể tạo được tối đa 3 tripeptide chứa đồng thời cả 3 α-amino acid.", 0], ["Khi thủy phân hoàn toàn polypeptide thu được hỗn hợp các α-amino acid.", 1]] },
+      { t: 1, ty: "tf", q: "Câu 57 (Trang 89). Các phát biểu về tính chất của peptide:", it: [["Thủy phân hoàn toàn Gly-Ala-Val thì thu được Gly, Ala và Val.", 1], ["Thủy phân không hoàn toàn Gly-Ala-Val có thể thu được Gly-Ala và Ala-Val.", 1], ["Gly-Ala-Val phản ứng với Cu(OH)₂ trong môi trường kiềm tạo thành dung dịch màu tím.", 1], ["Gly-Gly phản ứng hoàn toàn với NaOH thu được H₂NCH₂COONa.", 1]] },
+
+      { t: 1, ty: "sa", q: "Câu 58 (Trang 89). Cho các chất: (1) methylamine, (2) glycine, (3) alanine, (4) acetic acid, (5) glutamic acid. Hãy sắp xếp các chất phản ứng với dung dịch HCl tạo muối theo số thứ tự tăng dần (ví dụ 12, 134, ...)", a: ["1235", "1, 2, 3, 5", "1,2,3,5"], e: "Các chất phản ứng với HCl gồm: (1), (2), (3), (5) → 1235." },
+      { t: 1, ty: "sa", q: "Câu 59 (Trang 89). Cho các chất: (1) methylamine, (2) glycine, (3) aniline, (4) acetic acid, (5) lysine, (6) valine. Hãy sắp xếp các chất phản ứng với dung dịch NaOH tạo muối theo số thứ tự tăng dần (ví dụ 12, 134, ...)", a: ["2456", "2, 4, 5, 6", "2,4,5,6"], e: "Các chất phản ứng với NaOH gồm: (2), (4), (5), (6) → 2456." },
+      { t: 1, ty: "sa", q: "Câu 60 (Trang 90). Cho các phát biểu sau:\n(1) Phản ứng thế bromine vào vòng thơm của aniline dễ hơn benzene.\n(2) Trong phân tử, các amino acid đều chỉ có một nhóm NH₂ và một nhóm COOH.\n(3) Hợp chất H₂N-CH₂-COO-CH₃ tác dụng được với dung dịch NaOH và dung dịch HCl.\n(4) Thủy phân hoàn toàn tinh bột và cellulose đều thu được glucose.\n(5) Mỡ động vật và dầu thực vật chứa nhiều chất béo.\nHãy sắp xếp các phát biểu đúng theo số thứ tự tăng dần (ví dụ 12, 134, ...)", a: ["1345", "1, 3, 4, 5", "1,3,4,5"], e: "Các phát biểu đúng là (1), (3), (4), (5) → 1345." },
+      { t: 1, ty: "sa", q: "Câu 61 (Trang 90). Cho 15,0 gam glycine phản ứng hết với dung dịch HCl, sau phản ứng, khối lượng muối thu được là bao nhiêu gam?", a: ["22.3", "22,3"], e: "n_Gly = 0,2 mol → m_muối = 0,2 × 111,5 = 22,3 gam." },
+      { t: 1, ty: "sa", q: "Câu 62 (Trang 90). Trung hòa hết m gam glycine (NH₂–CH₂–COOH) cần vừa đủ 200 mL dung dịch KOH 0,6 M. Giá trị của m là bao nhiêu gam?", a: ["9", "9.0", "9,0"], e: "n_Gly = 0,12 mol → m = 0,12 × 75 = 9 gam." },
+      { t: 1, ty: "sa", q: "Câu 63 (Trang 90). Cho peptide X: Arg-Pro-Pro-Gly-Phe-Ser-Pro-Phe-Arg. Số liên kết peptide trong peptide X bằng bao nhiêu?", a: ["8"], e: "Peptide X có 9 gốc amino acid → 8 liên kết peptide." },
+      { t: 1, ty: "sa", q: "Câu 64 (Trang 90). Phân tử khối của peptide Gly – Ala bằng bao nhiêu?", a: ["146"], e: "M = 75 + 89 - 18 = 146." },
+      { t: 1, ty: "sa", q: "Câu 65 (Trang 90). Có bao nhiêu dipeptide tối đa có thể tạo ra từ một hỗn hợp gồm alanine và glycine?", a: ["4"], e: "Gồm 4 dipeptide: Gly-Gly, Ala-Ala, Gly-Ala, Ala-Gly." },
+      { t: 1, ty: "sa", q: "Câu 66 (Trang 90). Nếu thủy phân không hoàn toàn pentapeptide Gly-Ala-Gly-Ala-Gly thì thu được tối đa bao nhiêu dipeptide khác nhau?", a: ["2"], e: "Thu được 2 dipeptide khác nhau là Gly-Ala và Ala-Gly." },
+
+      // ==================== PHẦN 3: PROTEIN & ENZYME (TRANG 91 - 101) ====================
+      { t: 2, ty: "mcq", q: "Câu 5 (Trang 91). Khi nấu canh cua thì thấy các mảng “gạch cua” nổi lên là do?", o: ["phản ứng thủy phân protein.", "sự đông tụ lipid.", "sự đông tụ protein.", "phản ứng màu của protein."], a: 2 },
+      { t: 2, ty: "mcq", q: "Câu 6 (Trang 91-92). Protein nào có thể tan trong nước tạo thành dung dịch keo?", o: ["Collagen.", "Keratin.", "Fibroin.", "Albumin."], a: 3 },
+      { t: 2, ty: "mcq", q: "Câu 7 (Trang 92). Protein nào dưới đây có trong máu?", o: ["Fibroin.", "Hemoglobin.", "Myosin.", "Keratin."], a: 1 },
+      { t: 2, ty: "mcq", q: "Câu 8 (Trang 92). Cơ sở để hình thành nên các phân tử protein đơn giản là", o: ["amino acid.", "acid béo.", "các loại đường.", "tinh bột."], a: 0 },
+      { t: 2, ty: "mcq", q: "Câu 9 (Trang 92). Phát biểu nào sau đây không đúng?", o: ["Protein đơn giản chỉ cấu tạo từ các gốc α-amino acid.", "Protein phức tạp được cấu tạo từ protein đơn giản và “phi protein” (lipid, nucleic acid, carbohydrate,...).", "Gly-Ala và Ala-Gly là công thức của một dipeptide.", "Liên kết peptide là liên kết -CO-NH- giữa hai đơn vị α-amino acid."], a: 2 },
+      { t: 2, ty: "mcq", q: "Câu 10 (Trang 92). Nhỏ giấm ăn hoặc chanh vào sữa bò xuất hiện", o: ["sự đông tụ của protein do nhiệt độ.", "sự đông tụ protein do kim loại nặng.", "sự đông tụ của protein do acid.", "sự đông tụ của protein do base."], a: 2 },
+      { t: 2, ty: "mcq", q: "Câu 11 (Trang 92). Đun nóng lòng trắng trứng thấy xuất hiện", o: ["sự đông tụ của protein do nhiệt độ.", "sự đông tụ của protein do kim loại nặng.", "sự đông tụ của amine.", "sự đông tụ của protein do acid, base."], a: 0 },
+      { t: 2, ty: "mcq", q: "Câu 12 (Trang 92-93). Bromelain và papain là những enzyme có tác dụng thủy phân protein. Bromelain có nhiều trong quả dứa (thơm), còn papain có nhiều trong quả đu đủ. Trong y học, bromelain được sử dụng để điều trị viêm và giảm đau, còn papain được sử dụng để hỗ trợ tiêu hóa.\nCho các nhận định sau:\n(a) Thịt được ướp với nước ép dứa hoặc đu đủ thì khi nấu sẽ mềm chậm hơn.\n(b) Dứa (thơm) được sử dụng để ngăn ngừa tình trạng đau nhức cơ bắp sau khi tập thể dục cường độ cao.\n(c) Bromelain và papain được cấu tạo từ protein, có khả năng xúc tác cho quá trình thủy phân protein.\n(d) Enzyme papain rất tốt cho hệ tiêu hóa, giúp tiêu hóa các thức ăn như thịt, cá, trứng,... một cách dễ dàng hơn.\nSố nhận định đúng là", o: ["1.", "2.", "4.", "3."], a: 1, e: "2 nhận định đúng theo dữ kiện là (c) và (d)." },
+      { t: 2, ty: "mcq", q: "Câu 13 (Trang 93). Một khuyến cáo được đưa ra đối với mọi người là không uống sữa khi ăn cam hoặc vắt chanh vào sữa. Nguyên nhân của khuyến cáo này là", o: ["cam và chanh chứa các acid làm đông tụ protein có trong sữa, ngăn cản quá trình chuyển hóa của sữa trong cơ thể.", "cam và chanh chứa các acid xúc tác thủy phân protein ngay ở bên ngoài, dẫn đến chất lượng sữa giảm xuống.", "cam và chanh chứa các acid làm mất tính base của các nhóm amine có trong sữa, làm giảm chất lượng sữa.", "cam và chanh chứa các chất hữu cơ khi uống cùng với sữa sẽ giải phóng năng lượng quá lớn dẫn đến tình trạng thừa cân."], a: 0 },
+      { t: 2, ty: "mcq", q: "Câu 14 (Trang 93). Để tìm hiểu một loại dầu gội có thành phần đúng như quảng cáo in trên nhãn hay không, một học sinh lần lượt tiến hành các bước thí nghiệm sau:\n- Cho 1 mL dầu gội vào ống nghiệm chứa sẵn 1 mL nước, khuấy đều và nhẹ.\n- Thêm tiếp 2 mL dung dịch KOH 0,1M vào ống.\n- Tiếp tục thêm 2 giọt dung dịch CuSO₄ 0,1M vào ống, khuấy đều.\nSau 2 phút, dung dịch trong ống nghiệm hóa tím. Thành phần cần xác định trong mẫu dầu gội nói trên là", o: ["glucose.", "chất béo.", "collagen.", "sodium hydroxide."], a: 2 },
+      { t: 2, ty: "mcq", q: "Câu 15 (Trang 93). Cho 3 chất X, Y, Z vào 3 ống nghiệm chứa sẵn Cu(OH)₂ trong NaOH, lắc đều và quan sát thì thấy: Chất X xuất hiện màu tím, chất Y thì Cu(OH)₂ tan và có màu xanh nhạt, chất Z thì Cu(OH)₂ tan và có màu xanh thẫm. X, Y, Z lần lượt là", o: ["Protein, CH₃CHO, saccharose.", "Lòng trắng trứng, CH₃COOH, glucose.", "Hồ tinh bột, HCOOH, saccharose.", "Lòng trắng trứng, C₂H₅COOH, glycine."], a: 1 },
+      { t: 2, ty: "mcq", q: "Câu 16 (Trang 93-94). Tiến hành 2 thí nghiệm sau:\nThí nghiệm 1:\n- Bước 1: Cho vào ống nghiệm 1 giọt dung dịch CuSO₄ bão hòa + 2 mL dung dịch NaOH 30%.\n- Bước 2: Lắc nhẹ, gạn lớp dung dịch để giữ kết tủa.\n- Bước 3: Thêm khoảng 4 mL lòng trắng trứng vào ống nghiệm, dùng đũa thủy tinh khuấy đều.\nThí nghiệm 2:\n- Bước 1: Lấy khoảng 4 mL lòng trắng trứng cho vào ống nghiệm.\n- Bước 2: Nhỏ từng giọt khoảng 3 mL dung dịch CuSO₄ bão hòa.\n- Bước 3: Thêm khoảng 5 mL dung dịch NaOH 30% và khuấy đều.\nPhát biểu nào sau đây không đúng?", o: ["Các phản ứng ở các bước 3 xảy ra nhanh hơn khi các ống nghiệm được đun nóng.", "Sau bước 1 ở thí nghiệm 1, trong ống nghiệm xuất hiện kết tủa màu xanh.", "Sau bước 2 ở thí nghiệm 2, trong ống nghiệm xuất hiện kết tủa.", "Sau bước 3 ở cả hai thí nghiệm, hỗn hợp thu được sau khi khuấy xuất hiện màu tím."], a: 2 },
+      { t: 2, ty: "mcq", q: "Câu 17 (Trang 94). Thực phẩm nào sau đây chứa ít protein nhất?", o: ["Lúa gạo, lúa mì.", "Thịt, cá.", "Trứng.", "Sữa."], a: 0 },
+      { t: 2, ty: "mcq", q: "Câu 18 (Trang 94). Đặc điểm nào sau đây không phải của enzyme?", o: ["Hầu hết enzyme được cấu tạo từ protein.", "Enzyme là chất xúc tác sinh học giúp các phản ứng xảy ra chậm hơn nhiều lần so với dùng xúc tác hóa học.", "Mỗi enzyme chỉ xúc tác cho một hay một số phản ứng sinh hóa nhất định.", "Enzyme có nhiều vai trò, ứng dụng trong các lĩnh vực như nghiên cứu y học, dược phẩm, hóa học, công nghiệp, nông nghiệp."], a: 1 },
+      { t: 2, ty: "mcq", q: "Câu 19 (Trang 94). Phản ứng nào sau đây không có enzyme làm xúc tác?", o: ["Lên men rượu, lên men giấm, lên men lactic.", "Thủy phân tinh bột trong cơ thể người.", "Thủy phân peptide, protein.", "Đốt cháy khí gas gồm propane và butane."], a: 3 },
+      { t: 2, ty: "mcq", q: "Câu 20 (Trang 94-95). Đồ thị sau biểu diễn mối liên hệ giữa nồng độ chất sản phẩm của phản ứng khi có xúc tác và không có xúc tác enzyme.\nCho các nhận định sau:\n(a) Đường (I) ứng với tốc độ phản ứng có xúc tác, đường (II) biểu diễn tốc độ phản ứng không có xúc tác.\n(b) Trong khoảng thời gian từ 0 đến t₁, tốc độ trung bình của phản ứng có xúc tác lớn hơn của phản ứng không có xúc tác.\n(c) Trong khoảng thời gian từ t₁ đến t₂, tốc độ trung bình của phản ứng không có xúc tác lớn hơn của phản ứng có xúc tác.\n(d) Lượng sản phẩm thu được từ phản ứng có xúc tác lớn hơn lượng sản phẩm thu được từ phản ứng không có xúc tác.\nSố nhận định đúng là", note: "📌 Chú thích hình ảnh: Xem đồ thị Nồng độ sản phẩm theo Thời gian phản ứng tại Trang 95 - Câu 20 trong đề cương.", o: ["1.", "2.", "3.", "4."], a: 2 },
+      { t: 2, ty: "mcq", q: "Câu 21 (Trang 95-96). Sự khác nhau về năng lượng hoạt hóa (Ea) của phản ứng có sử dụng và không sử dụng enzyme xúc tác được biểu thị như hình bên.\nCho các nhận định sau:\n(a) Đường (2) có năng lượng hoạt hóa cao hơn đường (1).\n(b) Phản ứng hóa học ứng với đồ thị đã cho là phản ứng tỏa nhiệt.\n(c) Đường (1) biểu diễn cho phản ứng không sử dụng enzyme làm xúc tác.\n(d) Chất xúc tác là chất không bị biến đổi về chất và lượng sau phản ứng.\nCác nhận định đúng là", note: "📌 Chú thích hình ảnh: Xem đồ thị Năng lượng hoạt hóa Ea(1) và Ea(2) tại Trang 95 - Câu 21 trong đề cương.", o: ["(a), (c), (d).", "(a), (b), (d).", "(b), (c), (d).", "(a), (b), (c)."], a: 1 },
+      { t: 2, ty: "mcq", q: "Câu 22 (Trang 96). Có những cách phát biểu sau về protein:\n(1) Protein là những hợp chất cao phân tử thiên nhiên có cấu trúc phức tạp.\n(2) Protein chỉ có trong cơ thể người và động vật.\n(3) Cơ thể người và động vật không thể tổng hợp được protein từ những chất vô cơ mà chỉ tổng hợp được từ các amino acid.\n(4) Protein bền đối với nhiệt, đối với acid và kiềm.\nPhát biểu đúng là", o: ["(1), (2).", "(1), (3).", "(2), (3).", "(3), (4)."], a: 1 },
+      { t: 2, ty: "mcq", q: "Câu 23 (Trang 96). Cho các phát biểu:\n(1) Protein bị thủy phân khi đun nóng với dung dịch acid, dung dịch base hoặc nhờ xúc tác của enzyme.\n(2) Nhỏ vài giọt dung dịch nitric acid đặc vào ống nghiệm đựng dung dịch lòng trắng trứng (albumin) thì có kết tủa vàng.\n(3) Hemoglobin của máu là protein dạng hình cầu.\n(4) Dung dịch protein có phản ứng màu biuret.\n(5) Protein đông tụ khi cho acid, base hoặc khi đun nóng.\nSố phát biểu đúng là", o: ["4.", "5.", "3.", "2."], a: 1 },
+      { t: 2, ty: "mcq", q: "Câu 24 (Trang 96-97). Cho chuỗi polymer (được gọi là Insulin) có cấu tạo như Hình 10.1.\nCho các nhận định sau:\n(a) Insulin là polymer có chứa liên kết peptide.\n(b) Insulin là hợp chất cao phân tử được cấu tạo từ 51 đơn vị amino acid.\n(c) Người bị bệnh tiểu đường chỉ cần hạn chế sử dụng glucose nhưng có thể ăn tinh bột, protein không hạn chế.\n(d) Trong dung dịch có pH < 7, Glutamic acid luôn di chuyển về cực dương của điện trường.\nSố nhận định đúng là", note: "📌 Chú thích hình ảnh: Xem Hình 10.1. Cấu tạo của insulin tại Trang 97 - Câu 24 trong đề cương.", o: ["1.", "2.", "3.", "4."], a: 1 },
+      { t: 2, ty: "mcq", q: "Câu 25 (Trang 97). Cho các phát biểu sau:\n(a) Protein dạng hình cầu và dạng hình sợi tan tốt trong nước.\n(b) Một trong những tính chất hóa học đặc trưng của protein là phản ứng thủy phân.\n(c) Phản ứng của protein với nitric acid cho sản phẩm có màu tím.\n(d) Khi đun nóng lòng trắng trứng sẽ xảy ra hiện tượng đông tụ.\n(e) Trong cơ thể, enzyme đóng vai trò là chất xúc tác sinh học.\nSố phát biểu đúng là", o: ["4.", "2.", "3.", "1."], a: 2 },
+
+      { t: 2, ty: "tf", q: "Câu 26 (Trang 98). Cho các phát biểu sau về protein:", it: [["Gạch cua chứa nhiều protein chất lượng cao, dễ tiêu hóa và cung cấp các amino acid thiết yếu cho cơ thể. Khi nấu canh cua, gạch cua tạo thành những mảng gạch cua là sự đông tụ protein.", 1], ["Collagen trong màng vỏ trứng giúp tăng cường sức mạnh và tính linh hoạt của lớp màng, đồng thời bảo vệ lòng trắng và lòng đỏ trứng khỏi vi khuẩn và sự mất nước. Khi đun nóng, collagen có thể xảy ra hiện tượng đông tụ tương tự lòng trắng trứng.", 0], ["Khi nhỏ dung dịch nitric acid đặc vào lòng trắng trứng, màu của lòng trắng trứng chuyển thành màu vàng.", 1], ["Keratin là một loại protein có mặt trong tóc, da và móng, không tan trong nước và không xảy ra hiện tượng đông tụ protein.", 0]] },
+      { t: 2, ty: "tf", q: "Câu 27 (Trang 98). Cho các phát biểu về protein:", it: [["Protein là hợp chất cao phân tử được cấu tạo từ một hay nhiều chuỗi polypeptide.", 1], ["Mỗi chuỗi polypeptide trong protein chỉ chứa các đơn vị β-amino acid.", 0], ["Protein đơn giản khi thủy phân hoàn toàn thu được hỗn hợp các α-amino acid.", 1], ["Protein phức tạp được tạo thành từ protein đơn giản và các thành phần “phi protein”.", 1]] },
+      { t: 2, ty: "tf", q: "Câu 28 (Trang 98). Cho các phát biểu sau:", it: [["Các protein dạng hình sợi không tan trong nước.", 1], ["Myosin là một protein dạng hình cầu có thể tan trong nước.", 0], ["Hemoglobin là một protein có thể tan trong nước tạo dung dịch keo.", 1], ["Keratin là một loại protein hình sợi, không tan trong nước, có trong tóc và móng.", 1]] },
+      { t: 2, ty: "tf", q: "Câu 29 (Trang 98). Cho các phát biểu sau:", it: [["Phần lớn enzyme là những protein.", 1], ["Enzyme có tính chọn lọc thấp, có thể xúc tác cho nhiều phản ứng khác nhau.", 0], ["Enzyme làm tăng tốc độ phản ứng sinh hóa.", 1], ["Enzyme chỉ xúc tác cho một hoặc một số phản ứng nhất định.", 1]] },
+      { t: 2, ty: "tf", q: "Câu 30 (Trang 98-99). Cho các phát biểu sau:", it: [["Enzyme còn có nhiều ứng dụng trong công nghệ sinh học, như trong công nghiệp thực phẩm (sản xuất, bảo quản, chế biến thực phẩm,...).", 1], ["Enzyme được sử dụng trong công nghiệp dược phẩm để sản xuất thuốc.", 1], ["Enzyme tham gia vào quá trình tạo ra hoặc sửa đổi thông tin di truyền.", 1], ["Enzyme có thể thay thế enzyme tự nhiên trong cơ thể người.", 0]] },
+
+      { t: 2, ty: "sa", q: "Câu 31 (Trang 99). Cho các chất: cellulose (1), saccharose (2), aniline (3), albumin (4), tristearin (5) và Gly-Ala-Val (6). Có bao nhiêu chất bị thủy phân trong môi trường acid ở điều kiện thích hợp?", a: ["5"], e: "Có 5 chất bị thủy phân gồm (1), (2), (4), (5), (6)." },
+      { t: 2, ty: "sa", q: "Câu 32 (Trang 99). Có bao nhiêu phát biểu đúng trong các phát biểu sau?\n(a) Protein là hợp phần quan trọng trong thức ăn của người và nhiều loài động vật.\n(b) Dẫn từ từ dung dịch ethylamine tới dư vào dung dịch Cu(OH)₂ thu được phức chất có công thức là [Cu(NH₂CH₃)₄](OH)₂.\n(c) Trùng ngưng ε-aminocaproic acid thì thu được polycaproamide.\n(d) Hầu hết enzyme là protein, đóng vai trò là chất xúc tác sinh học cho các phản ứng sinh hóa trong cơ thể.\n(e) Liên kết của nhóm CO với nhóm NH giữa hai đơn vị amino acid được gọi là liên kết peptide.\n(f) Đưa đũa thủy tinh vừa nhúng dung dịch HCl đậm đặc lên sát trên miệng lọ đựng dung dịch methylamine đặc thấy có khói trắng.", a: ["4", "5"], e: "Các phát biểu đúng là (a), (c), (d), (f) → 4." },
+      { t: 2, ty: "sa", q: "Câu 33 (Trang 99-100). Có bao nhiêu phát biểu đúng trong các phát biểu sau?\n(a) Dùng phản ứng màu biuret phân biệt được Gly-Ala với Gly-Ala-Gly.\n(b) Aniline là một arylamine.\n(c) Lòng trắng trứng tác dụng với Cu(OH)₂ tạo dung dịch màu xanh.\n(d) Có ba amine bậc hai đều có công thức C₄H₁₁N.\n(e) Nhờ tạo được liên kết hydrogen với nước nên ở điều kiện thường, các amine có tổng số carbon nhỏ thường tan tốt trong nước.\n(f) Peptide Gly-Ala-Val-Glu có đầu C là Glu.", a: ["4", "5"], e: "Các phát biểu đúng là (a), (b), (d), (e) (4 câu ở trang 99, tính thêm (f) ở trang 100 là 5)." },
+      { t: 2, ty: "sa", q: "Câu 34 (Trang 100). Có bao nhiêu phát biểu đúng trong các phát biểu sau?\n(a) Thủy phân hoàn toàn peptide trong dung dịch kiềm dư, thu được các α-amino acid.\n(b) Khi đặt trong điện trường ở pH > 10, valine trở thành anion và di chuyển về cực dương (+).\n(c) Sục methylamine đến dư vào dung dịch AlCl₃ thu được chất rắn không tan.\n(d) Tất cả các amine đều làm quỳ tím ẩm chuyển màu xanh.\n(e) Độ tan của các protein trong nước tăng lên khi đun nóng.\n(f) Khi thủy phân peptide nhờ xúc tác acid hoặc base sản phẩm chỉ thu được các α-amino acid.", a: ["2"], e: "Có 2 phát biểu đúng là (b) và (c)." },
+      { t: 2, ty: "sa", q: "Câu 35 (Trang 100-101). Để khảo sát độ hoạt động của protease theo nhiệt độ, người ta tiến hành thí nghiệm nghiên cứu tốc độ phân hủy chất bẩn bởi protease như biểu đồ.\nCho các nhận định sau:\n(1) Protease hoạt động tốt nhất ở nhiệt độ 20°C.\n(2) Nhiệt độ càng cao, khả năng hoạt động của protease càng tốt.\n(3) Protease còn dư trong xà phòng không gây ô nhiễm môi trường.\n(4) Cơ chế hoạt động của protease trong chất giặt rửa cao cấp giống với cơ chế giặt rửa của xà phòng và chất giặt rửa tổng hợp.\n(5) Do có tính chọn lọc cao, phải sử dụng ở một nhiệt độ nghiêm ngặt nên người ta đang dần thay thế chất giặt rửa chứa enzyme bằng chất giặt rửa có chứa các chất tẩy rửa mạnh.\nSắp xếp các phát biểu đúng theo số thứ tự tăng dần (ví dụ: 1234, 24,...).", note: "📌 Chú thích hình ảnh: Xem biểu đồ khảo sát độ hoạt động của protease theo nhiệt độ tại Trang 100 - Câu 35 trong đề cương.", a: ["3"], e: "Chỉ có phát biểu (3) đúng." },
+
+      // ==================== PHẦN 4: ÔN TẬP CHƯƠNG (TRANG 103 - 108) ====================
+      { t: 3, ty: "mcq", q: "Câu 4 (Trang 103). Chất nào sau đây không phải amine bậc một?", o: ["C₂H₅NHCH₃.", "CH₃NH₂.", "C₆H₅NH₂.", "C₂H₅NH₂."], a: 0 },
+      { t: 3, ty: "mcq", q: "Câu 5 (Trang 103). Chất nào sau đây thuộc loại amine bậc 1?", o: ["(CH₃)₃N.", "C₂H₅-NH₂.", "CH₃-NH-C₂H₅.", "CH₃-NH-CH₃."], a: 1 },
+      { t: 3, ty: "mcq", q: "Câu 6 (Trang 103). Amine nào sau đây không phải là amine bậc một?", o: ["Benzylamine.", "Methylamine.", "Ethylamine.", "Dimethylamine."], a: 3 },
+      { t: 3, ty: "mcq", q: "Câu 7 (Trang 103). Amine nào sau đây thuộc loại amine bậc hai?", o: ["Trimethylamine.", "Methylamine.", "Phenylamine.", "Dimethylamine."], a: 3 },
+      { t: 3, ty: "mcq", q: "Câu 8 (Trang 103). Amine có cấu tạo CH₃CH₂CH(NH₂)CH₃ là amine", o: ["bậc III.", "bậc I.", "bậc IV.", "bậc II."], a: 1 },
+      { t: 3, ty: "mcq", q: "Câu 9 (Trang 103). Alcohol và amine nào sau đây cùng bậc?", o: ["(CH₃)₃COH và (CH₃)₂NH.", "(CH₃)₂CHCH₂OH và CH₃NHCH(CH₃)₂.", "CH₃CH(NH₂)CH₃ và CH₃CH₂OH.", "(CH₃)₂CHOH và (CH₃)₂CHNH₂."], a: 2 },
+      { t: 3, ty: "mcq", q: "Câu 10 (Trang 103). Chất nào sau đây là amine bậc hai?", o: ["CH₃CH₂CH₂NH₂.", "CH₃CH(NH₂)CH₃.", "CH₃NHCH₂CH₃.", "(CH₃)₃N."], a: 2 },
+      { t: 3, ty: "mcq", q: "Câu 11 (Trang 103). Amine nào sau đây có chứa vòng benzene?", o: ["Aniline.", "methylamine.", "Ethylamine.", "propylamine."], a: 0 },
+      { t: 3, ty: "mcq", q: "Câu 12 (Trang 103). Số đồng phân amine bậc 1 của công thức C₄H₁₁N là", o: ["8.", "3.", "4.", "2."], a: 2 },
+      { t: 3, ty: "mcq", q: "Câu 13 (Trang 103). Số đồng phân amine bậc 1 có cùng công thức phân tử C₅H₁₃N là", o: ["6.", "9.", "7.", "8."], a: 3 },
+      { t: 3, ty: "mcq", q: "Câu 14 (Trang 103). Số lượng đồng phân amine bậc ba của C₅H₁₃N là", o: ["2.", "3.", "4.", "5."], a: 1 },
+      { t: 3, ty: "mcq", q: "Câu 15 (Trang 103). Chất nào sau đây là amine bậc ba?", o: ["Trimethylamine.", "Methylamine.", "Ethylamine.", "Aniline."], a: 0 },
+      { t: 3, ty: "mcq", q: "Câu 16 (Trang 104). Thủy phân hoàn toàn tripeptide X, thu được glycine và alanine. Số đồng phân cấu tạo của X là", o: ["3.", "4.", "5.", "6."], a: 3 },
+      { t: 3, ty: "mcq", q: "Câu 17 (Trang 104). Khi nấu canh cua thì thấy các mảng “gạch cua” nổi lên là do?", o: ["phản ứng thủy phân protein.", "sự đông tụ lipid.", "sự đông tụ protein.", "phản ứng màu của protein."], a: 2 },
+      { t: 3, ty: "mcq", q: "Câu 18 (Trang 104). Trong môi trường kiềm, tripeptide tác dụng với Cu(OH)₂ tạo thành dung dịch có màu", o: ["vàng.", "đỏ.", "xanh.", "tím."], a: 3 },
+      { t: 3, ty: "mcq", q: "Câu 19 (Trang 104). Peptide nào sau đây không có phản ứng màu biuret?", o: ["Ala-Gly.", "Ala-Gly-Gly.", "Ala-Ala-Gly-Gly.", "Gly-Ala-Gly."], a: 0 },
+      { t: 3, ty: "mcq", q: "Câu 20 (Trang 104). Dung dịch chất nào sau đây có phản ứng màu biuret?", o: ["Lòng trắng trứng.", "Methyl fomat.", "Glucose.", "Đimethyl amin."], a: 0 },
+      { t: 3, ty: "mcq", q: "Câu 21 (Trang 104). Dung dịch Ala-Gly không phản ứng được với dung dịch nào sau đây?", o: ["HCl.", "H₂SO₄.", "NaCl.", "KOH."], a: 2 },
+      { t: 3, ty: "mcq", q: "Câu 22 (Trang 104). Sản phẩm cuối cùng của quá trình thủy phân các polypeptide nhờ xúc tác thích hợp là", o: ["β-amino acid.", "ester.", "α-amino acid.", "Carboxylic acid."], a: 2 },
+      { t: 3, ty: "mcq", q: "Câu 23 (Trang 104). Phát biểu nào sau đây là sai?", o: ["Liên kết –CO–NH– giữa hai đơn vị α-amino acid gọi là liên kết peptide.", "Các peptide đều cho phản ứng màu biuret.", "Các peptide đều bị thủy phân trong môi trường acid hoặc môi trường kiềm.", "Các peptide thường ở thể rắn, có nhiệt độ nóng chảy cao và dễ tan trong nước."], a: 1 },
+      { t: 3, ty: "mcq", q: "Câu 24 (Trang 104). Khi nói về peptide và protein, phát biểu nào sau đây là sai?", o: ["Protein có phản ứng màu biuret với Cu(OH)₂.", "Thủy phân hoàn toàn protein đơn giản thu được các α-amino acid.", "Liên kết của nhóm CO với nhóm NH giữa hai đơn vị α-amino acid được gọi là liên kết peptide.", "Tất cả các protein đều tan trong nước tạo thành dung dịch keo."], a: 3 },
+      { t: 3, ty: "mcq", q: "Câu 25 (Trang 105). Khi thủy phân tripeptide: H₂N-CH(CH₃)CO-NH-CH₂-CO-NH-CH₂-COOH sẽ tạo ra các α-amino acid nào?", o: ["H₂NCH₂COOH, CH₃CH(NH₂)COOH.", "H₂NCH(CH₃)COOH, H₂NCH(NH₂)COOH.", "H₂NCH₂CH(CH₃)COOH, H₂NCH₂COOH.", "CH₃CH(NH₂)CH₂COOH, H₂NCH₂COOH."], a: 0 },
+
+      { t: 3, ty: "tf", q: "Câu 26 (Trang 105). Cho các phát biểu sau về peptide:", it: [["Peptide chứa 5 gốc α-amino acid gọi là pentapeptide và có chứa 4 liên kết peptide.", 1], ["Peptide Gly-Ala-Val-Ala khi thủy phân không hoàn toàn thu được hỗn hợp sản phẩm, trong đó có tối đa 3 peptide có khả năng phản ứng với Cu(OH)₂ tạo dung dịch màu tím đặc trưng.", 1], ["Dipeptide Ala-Ala không có khả năng phản ứng với dung dịch HNO₂ ở nhiệt độ thường tạo ra khí N₂.", 0], ["Hai dipeptide Gly-Ala và Ala-Gly là đồng phân của nhau.", 1]] },
+      { t: 3, ty: "tf", q: "Câu 27 (Trang 105). Cho các phát biểu sau về enzyme:", it: [["Phần lớn enzyme là những peptide xúc tác cho các phản ứng hóa học và sinh hóa.", 0], ["Enzyme có tính chọn lọc cao, mỗi enzyme chỉ xúc tác cho một hoặc một số phản ứng nhất định.", 1], ["Trong kĩ thuật di truyền, enzyme không tham gia vào quá trình tạo ra thông tin di truyền mới hoặc sửa đổi thông tin di truyền hiện có.", 0], ["Tốc độ phản ứng có xúc tác enzyme thường nhanh hơn rất nhiều lần so với xúc tác hóa học của cùng quá trình hóa học.", 1]] },
+      { t: 3, ty: "tf", q: "Câu 28 (Trang 105). Cho công thức cấu tạo của peptide X như hình vẽ:", note: "📌 Chú thích hình ảnh: Xem hình công thức cấu tạo của peptide X tại Trang 105 - Câu 28 trong đề cương.", it: [["Amino acid đầu N là Alanine.", 0], ["Khi thủy phân không hoàn toàn X có thể thu được peptide Val-Ala-Gly.", 0], ["Khi thủy phân không hoàn toàn X có thể thu được tối đa 3 dipeptide khác nhau.", 1], ["Peptide X có công thức phân tử là C₁₃H₂₅N₄O₅.", 0]], e: "CTPT đúng của X là C₁₃H₂₄N₄O₅." },
+      { t: 3, ty: "tf", q: "Câu 29 (Trang 106). Kết quả phân tích nguyên tố trong một phân tử dipeptide X như sau: %C = 36,36%; %H = 6,06%; %N = 21,21% về khối lượng; còn lại là oxygen. Từ phổ khối lượng, xác định được phân tử khối của X bằng 132. Cho các phát biểu sau:", it: [["Công thức phân tử của X là C₄H₈O₃N₂.", 1], ["Tên gọi của X là Gly-Gly.", 1], ["Dung dịch X có phản ứng màu biuret.", 0], ["Khi nhỏ dung dịch X vào dung dịch HNO₂ ở khoảng -5°C thấy có khí không màu bay ra.", 1]] },
+      { t: 3, ty: "tf", q: "Câu 30 (Trang 106). Cho 4 ống nghiệm, trong mỗi ống đựng khoảng 2 – 3 mL dung dịch loãng của lòng trắng trứng. Nhỏ vào ống nghiệm (1) vài giọt dung dịch HNO₃, cho vào ống (2) lượng Cu(OH)₂ bằng hạt đậu xanh; vào ống (3) vài giọt dung dịch NaOH dư, đun nóng; lắc đều các chất trong 3 ống nghiệm. Đun sôi nhẹ chất lỏng trong ống nghiệm (4). Cho các phát biểu sau:", it: [["Trong ống nghiệm (1) xuất hiện màu vàng.", 1], ["Trong ống nghiệm (2) xuất hiện màu xanh lam.", 0], ["Trong ống nghiệm (3) xuất hiện sự đông tụ.", 1], ["Trong ống nghiệm (4) thu được dung dịch trong suốt.", 0]] },
+
+      { t: 3, ty: "sa", q: "Câu 31 (Trang 106). Có bao nhiêu chất phản ứng với nước bromine: phenol (1), methyl acrylate (2), aniline (3), formaldehyde (4), butan-2-one (5), formic acid (6)?", a: ["5"], e: "Có 5 chất phản ứng gồm: (1), (2), (3), (4), (6)." },
+      { t: 3, ty: "sa", q: "Câu 32 (Trang 106-107). Ephedrine được sử dụng với hàm lượng nhất định trong các loại thuốc điều trị cảm và dị ứng có công thức cấu tạo như hình vẽ.\nCho các phát biểu:\n1. Ephedrine phản ứng được với NaOH trong dung dịch.\n2. Ephedrine phản ứng được với dung dịch HCl.\n3. Ephedrine thuộc loại amino acid.\n4. Ephedrine tạo được liên kết hydrogen với nước.\n5. Ephedrine độc với người kể cả khi hàm lượng nhỏ.\nLiệt kê các phát biểu đúng theo số tương ứng tăng dần.", note: "📌 Chú thích hình ảnh: Xem hình công thức cấu tạo của Ephedrine tại Trang 106 - Câu 32 trong đề cương.", a: ["24", "2, 4", "2,4"], e: "Các phát biểu đúng là 2 và 4 → 24." },
+      { t: 3, ty: "sa", q: "Câu 33 (Trang 107). Có bao nhiêu chất là chất lỏng ở điều kiện thường trong các chất sau: methylamine (1), propylamine (2), aniline (3), valine (4), triolein (5), ethyl acetate (6), lysine (7) và glutamic acid (8)?", a: ["4", "3"], e: "Có 4 chất lỏng gồm: propylamine (2), aniline (3), triolein (5), ethyl acetate (6)." },
+      { t: 3, ty: "sa", q: "Câu 34 (Trang 107-108). Sự kết hợp giữa aspartic acid và phenylalanine tạo thành peptide, peptide này có thể được chuyển đổi thành methyl ester gọi là aspartame.\n(1) Tên thay thế của aspartic acid là 2-aminobutane-1,4-dioic acid.\n(2) Tại pH = 7,0, khi đặt vào một điện trường, aspartic acid (có điểm đẳng điện pI = 2,98) di chuyển về phía cực dương.\n(3) Tổng số nguyên tử có trong một phân tử aspartame là 40.\n(4) Có thể sử dụng aspartame để thay thế đường saccharose trong quá trình làm các loại bánh nướng.\n(5) Aspartame không có khả năng tạo thành sản phẩm màu tím đặc trưng với thuốc thử biuret.\nLiệt kê các nhận định đúng theo số thứ tự tăng dần (ví dụ: 1234, 24,...).", note: "📌 Chú thích hình ảnh: Xem hình công thức của aspartic acid, phenylalanine và aspartame tại Trang 107 - Câu 34 trong đề cương.", a: ["25", "125", "2, 5", "1, 2, 5"], e: "Các nhận định đúng là 2, 5 (hoặc 1, 2, 5)." },
+      { t: 3, ty: "sa", q: "Câu 35 (Trang 108). Giá trị pH của dung dịch các amino acid mà khi đặt trong điện trường amino acid đó không di chuyển về phía điện cực nào cả được cho ở bảng sau.\nNếu pH của dung dịch bằng 9 thì khi đặt trong điện trường có bao nhiêu amino acid ở trên di chuyển về cực dương?", svg: "tbl_p4_c35", a: ["4"], e: "Ở pH = 9, có 4 amino acid có pI < 9 (Alanine, Glutamic acid, Histidine, Aspartic acid) tồn tại dạng anion và di chuyển về cực dương." }
+    ];
+
+    var activeQuestions = [];
+    var userState = {};
+    var isExamSubmitted = false;
+
+    function shuffleArray(arr) {
+      var copy = arr.slice();
+      for (var i = copy.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = temp;
+      }
+      return copy;
+    }
+
+    function prepareQuestion(raw, doShuffle) {
+      var qObj = {
+        t: raw.t,
+        ty: raw.ty,
+        q: raw.q,
+        note: raw.note || "",
+        svg: raw.svg || "",
+        e: raw.e || ""
+      };
+
+      if (raw.ty === "mcq") {
+        var pairs = [];
+        for (var i = 0; i < raw.o.length; i++) {
+          pairs.push({ text: raw.o[i], ok: (i === raw.a) });
+        }
+        if (doShuffle) pairs = shuffleArray(pairs);
+        qObj.o = [];
+        qObj.a = 0;
+        for (var k = 0; k < pairs.length; k++) {
+          qObj.o.push(pairs[k].text);
+          if (pairs[k].ok) qObj.a = k;
+        }
+      } else if (raw.ty === "tf") {
+        var items = [];
+        for (var m = 0; m < raw.it.length; m++) {
+          items.push({ text: raw.it[m][0], a: (raw.it[m][1] === 1 || raw.it[m].a === true) });
+        }
+        if (doShuffle) items = shuffleArray(items);
+        qObj.it = items;
+      } else {
+        qObj.a = raw.a.slice();
+      }
+      return qObj;
+    }
+
+    function initQuiz(shuffle, customList) {
+      var topicVal = document.getElementById("topicSelect").value;
+      var typeVal = document.getElementById("typeSelect").value;
+      var modeVal = document.getElementById("modeSelect").value;
+
+      isExamSubmitted = false;
+      userState = {};
+
+      var pool = [];
+      if (customList) {
+        for (var c = 0; c < customList.length; c++) {
+          var ci = customList[c];
+          if (ci.ty === "tf") {
+            var rawIt = [];
+            for (var s = 0; s < ci.it.length; s++) rawIt.push([ci.it[s].text, ci.it[s].a ? 1 : 0]);
+            pool.push(prepareQuestion({ t: ci.t, ty: ci.ty, q: ci.q, note: ci.note, svg: ci.svg, e: ci.e, it: rawIt }, shuffle));
+          } else {
+            pool.push(prepareQuestion(ci, shuffle));
+          }
+        }
+      } else {
+        for (var i = 0; i < RAW_QUESTIONS.length; i++) {
+          var item = RAW_QUESTIONS[i];
+          var matchTopic = (topicVal === "all" || String(item.t) === topicVal);
+          var matchType = (typeVal === "all" || item.ty === typeVal);
+          if (matchTopic && matchType) {
+            pool.push(prepareQuestion(item, shuffle));
+          }
+        }
+      }
+
+      if (shuffle) {
+        pool = shuffleArray(pool);
+      }
+
+      activeQuestions = pool;
+
+      var showSubmit = (modeVal === "exam");
+      document.getElementById("submitBtn").style.display = showSubmit ? "inline-block" : "none";
+      document.getElementById("bottomSubmitBtn").style.display = showSubmit ? "inline-block" : "none";
+      document.getElementById("retryWrongBtn").style.display = "none";
+      document.getElementById("bottomRetryBtn").style.display = "none";
+
+      renderQuiz();
+      updateStats();
+    }
+
+    function renderQuiz() {
+      var container = document.getElementById("quizContainer");
+      var modeVal = document.getElementById("modeSelect").value;
+
+      if (activeQuestions.length === 0) {
+        container.innerHTML = '<div class="question-card">Không có câu hỏi phù hợp với bộ lọc.</div>';
+        return;
+      }
+
+      var out = [];
+      for (var idx = 0; idx < activeQuestions.length; idx++) {
+        var item = activeQuestions[idx];
+        var typeLabel = (item.ty === "mcq")
+          ? "Trắc nghiệm ABCD (0.25đ)"
+          : (item.ty === "tf")
+          ? "Phần III: Đúng / Sai (Tối đa 1.0đ)"
+          : "Phần IV: Trả lời ngắn (0.25đ)";
+
+        var noteHtml = item.note ? '<div class="image-note-box">' + item.note + '</div>' : "";
+        var svgHtml = item.svg ? renderSvgTableByCode(item.svg) : "";
+
+        var bodyHtml = "";
+        if (item.ty === "mcq") {
+          bodyHtml = '<div class="options-list">';
+          for (var optIdx = 0; optIdx < item.o.length; optIdx++) {
+            bodyHtml += '<button class="option-btn" id="q-' + idx + '-opt-' + optIdx + '" onclick="handleMcq(' + idx + ',' + optIdx + ')">' +
+              '<span>' + LETTERS[optIdx] + '. ' + item.o[optIdx] + '</span></button>';
+          }
+          bodyHtml += '</div>';
+        } else if (item.ty === "tf") {
+          bodyHtml = '<div class="tf-list">';
+          for (var sIdx = 0; sIdx < item.it.length; sIdx++) {
+            bodyHtml += '<div class="tf-row" id="q-' + idx + '-row-' + sIdx + '">' +
+              '<div class="tf-statement">' + SUB_LETTERS[sIdx] + ') ' + item.it[sIdx].text + '</div>' +
+              '<div class="tf-buttons">' +
+                '<button class="tf-btn" id="q-' + idx + '-' + sIdx + '-T" onclick="handleTf(' + idx + ',' + sIdx + ',true)">Đúng</button>' +
+                '<button class="tf-btn" id="q-' + idx + '-' + sIdx + '-F" onclick="handleTf(' + idx + ',' + sIdx + ',false)">Sai</button>' +
+              '</div></div>';
+          }
+          bodyHtml += '</div>';
+        } else {
+          var checkBtn = (modeVal === "instant")
+            ? '<button class="btn-primary" onclick="checkSaInstant(' + idx + ')">Kiểm tra</button>'
+            : '';
+          bodyHtml = '<div class="sa-wrapper" id="q-' + idx + '-sa-wrap"><div class="sa-input-row">' +
+            '<input type="text" class="sa-input" id="q-' + idx + '-sa-input" placeholder="Nhập đáp án..." ' +
+            'oninput="handleSaInput(' + idx + ',this.value)" onkeydown="handleSaKey(event,' + idx + ')" />' +
+            checkBtn + '</div></div>';
+        }
+
+        var expHtml = item.e
+          ? '<div class="explanation-box" id="q-' + idx + '-exp"><div class="explanation-title">💡 Giải thích:</div><div>' + item.e + '</div></div>'
+          : '';
+
+        out.push(
+          '<div class="question-card" id="card-' + idx + '">' +
+            '<div class="card-header-tags">' +
+              '<span class="topic-tag">' + TOPICS[item.t] + '</span>' +
+              '<span class="type-tag' + (item.ty === "sa" ? " sa-tag" : "") + '">' + typeLabel + '</span>' +
+            '</div>' +
+            '<div class="question-text">' + item.q + '</div>' +
+            noteHtml + svgHtml + bodyHtml +
+            '<div class="feedback" id="q-' + idx + '-fb"></div>' +
+            expHtml +
+          '</div>'
+        );
+      }
+      container.innerHTML = out.join("");
+    }
+
+    function handleSaKey(e, idx) {
+      if (e && (e.key === "Enter" || e.keyCode === 13)) checkSaInstant(idx);
+    }
+
+    function handleMcq(idx, chosenIdx) {
+      var mode = document.getElementById("modeSelect").value;
+      if (mode === "exam" && isExamSubmitted) return;
+      userState[idx] = chosenIdx;
+      var item = activeQuestions[idx];
+      for (var k = 0; k < 4; k++) {
+        var btn = document.getElementById("q-" + idx + "-opt-" + k);
+        if (!btn) continue;
+        btn.classList.remove("selected", "correct", "wrong");
+        if (mode === "exam") {
+          if (k === chosenIdx) btn.classList.add("selected");
+        } else {
+          if (k === item.a) btn.classList.add("correct");
+          else if (k === chosenIdx && chosenIdx !== item.a) btn.classList.add("wrong");
+        }
+      }
+      if (mode === "instant") showQuestionFeedback(idx);
+      updateStats();
+    }
+
+    function handleTf(idx, sIdx, val) {
+      var mode = document.getElementById("modeSelect").value;
+      if (mode === "exam" && isExamSubmitted) return;
+      if (!userState[idx]) userState[idx] = {};
+      userState[idx][sIdx] = val;
+
+      var item = activeQuestions[idx];
+      var btnT = document.getElementById("q-" + idx + "-" + sIdx + "-T");
+      var btnF = document.getElementById("q-" + idx + "-" + sIdx + "-F");
+      var row = document.getElementById("q-" + idx + "-row-" + sIdx);
+
+      btnT.classList.remove("selected", "correct-choice", "wrong-choice");
+      btnF.classList.remove("selected", "correct-choice", "wrong-choice");
+      row.classList.remove("row-correct", "row-wrong");
+
+      if (mode === "exam") {
+        if (val) btnT.classList.add("selected");
+        else btnF.classList.add("selected");
+      } else {
+        var rightAns = item.it[sIdx].a;
+        var chosenBtn = val ? btnT : btnF;
+        if (val === rightAns) {
+          chosenBtn.classList.add("correct-choice");
+          row.classList.add("row-correct");
+        } else {
+          chosenBtn.classList.add("wrong-choice");
+          row.classList.add("row-wrong");
+        }
+        showQuestionFeedback(idx);
+      }
+      updateStats();
+    }
+
+    function handleSaInput(idx, val) {
+      var mode = document.getElementById("modeSelect").value;
+      if (mode === "exam" && isExamSubmitted) return;
+      userState[idx] = String(val || "").trim();
+      updateStats();
+    }
+
+    function checkSaInstant(idx) {
+      var el = document.getElementById("q-" + idx + "-sa-input");
+      userState[idx] = String(el ? el.value : "").trim();
+      showQuestionFeedback(idx);
+      updateStats();
+    }
+
+    function isSaCorrect(item, userVal) {
+      if (!userVal) return false;
+      var u = String(userVal).trim().toLowerCase().replace(/\s+/g, " ");
+      var uComma = u.replace(/\./g, ",");
+      var uDot = u.replace(/,/g, ".");
+      for (var i = 0; i < item.a.length; i++) {
+        var na = String(item.a[i]).trim().toLowerCase();
+        if (na === u || na === uComma || na === uDot) return true;
+      }
+      return false;
+    }
+
+    function getQuestionScore(idx) {
+      var item = activeQuestions[idx];
+      var st = userState[idx];
+      if (st === undefined || st === null || st === "") {
+        return { earned: 0, max: (item.ty === "tf" ? 1.0 : 0.25), isDone: false, isFull: false };
+      }
+      if (item.ty === "mcq") {
+        var ok = (st === item.a);
+        return { earned: ok ? 0.25 : 0, max: 0.25, isDone: true, isFull: ok };
+      } else if (item.ty === "tf") {
+        var ansCount = 0, rightCount = 0;
+        for (var k = 0; k < 4; k++) {
+          if (st[k] === true || st[k] === false) {
+            ansCount++;
+            if (st[k] === item.it[k].a) rightCount++;
+          }
+        }
+        if (ansCount === 0) return { earned: 0, max: 1.0, isDone: false, isFull: false };
+        return { earned: TF_POINTS[rightCount], max: 1.0, isDone: ansCount === 4, isFull: rightCount === 4, correctCount: rightCount };
+      } else {
+        var okSa = isSaCorrect(item, st);
+        return { earned: okSa ? 0.25 : 0, max: 0.25, isDone: st.length > 0, isFull: okSa };
+      }
+    }
+
+    function showQuestionFeedback(idx) {
+      var item = activeQuestions[idx];
+      var fb = document.getElementById("q-" + idx + "-fb");
+      var exp = document.getElementById("q-" + idx + "-exp");
+      var sc = getQuestionScore(idx);
+
+      fb.className = "feedback show";
+      if (item.ty === "mcq") {
+        var rightL = LETTERS[item.a];
+        if (sc.isFull) {
+          fb.classList.add("ok");
+          fb.textContent = "✓ Chính xác! Đáp án đúng là " + rightL + " (+0.25 điểm).";
+        } else {
+          fb.classList.add("err");
+          fb.textContent = "✗ Chưa đúng! Đáp án đúng là " + rightL + ".";
+        }
+      } else if (item.ty === "tf") {
+        var p = [];
+        for (var i = 0; i < 4; i++) p.push(SUB_LETTERS[i] + "-" + (item.it[i].a ? "Đ" : "S"));
+        var rightStr = p.join(", ");
+        if (sc.correctCount === 4) {
+          fb.classList.add("ok");
+          fb.textContent = "✓ Tuyệt vời! Đúng 4/4 ý (+1.00 điểm). Đáp án: " + rightStr;
+        } else if (sc.correctCount > 0) {
+          fb.classList.add("partial");
+          fb.textContent = "⚠ Đúng " + sc.correctCount + "/4 ý (+" + sc.earned.toFixed(2) + " điểm). Đáp án: " + rightStr;
+        } else {
+          fb.classList.add("err");
+          fb.textContent = "✗ Đúng 0/4 ý (0 điểm). Đáp án: " + rightStr;
+        }
+      } else {
+        var wrap = document.getElementById("q-" + idx + "-sa-wrap");
+        wrap.classList.remove("sa-correct", "sa-wrong");
+        if (sc.isFull) {
+          wrap.classList.add("sa-correct");
+          fb.classList.add("ok");
+          fb.textContent = "✓ Chính xác! Đáp án: " + item.a[0] + " (+0.25 điểm).";
+        } else {
+          wrap.classList.add("sa-wrong");
+          fb.classList.add("err");
+          fb.textContent = "✗ Chưa chính xác! Đáp án đúng là: " + item.a[0];
+        }
+      }
+      if (exp) exp.classList.add("show");
+    }
+
+    function submitExam() {
+      isExamSubmitted = true;
+      for (var idx = 0; idx < activeQuestions.length; idx++) {
+        var item = activeQuestions[idx];
+        if (item.ty === "mcq") {
+          var chosen = userState[idx];
+          for (var k = 0; k < 4; k++) {
+            var btn = document.getElementById("q-" + idx + "-opt-" + k);
+            if (!btn) continue;
+            btn.classList.remove("selected");
+            if (k === item.a) btn.classList.add("correct");
+            else if (k === chosen && chosen !== item.a) btn.classList.add("wrong");
+          }
+        } else if (item.ty === "tf") {
+          var st = userState[idx] || {};
+          for (var sIdx = 0; sIdx < 4; sIdx++) {
+            var val = st[sIdx];
+            var rightAns = item.it[sIdx].a;
+            var btnT = document.getElementById("q-" + idx + "-" + sIdx + "-T");
+            var btnF = document.getElementById("q-" + idx + "-" + sIdx + "-F");
+            var row = document.getElementById("q-" + idx + "-row-" + sIdx);
+            btnT.classList.remove("selected");
+            btnF.classList.remove("selected");
+            if (val === true || val === false) {
+              var chosenBtn = val ? btnT : btnF;
+              if (val === rightAns) {
+                chosenBtn.classList.add("correct-choice");
+                row.classList.add("row-correct");
+              } else {
+                chosenBtn.classList.add("wrong-choice");
+                row.classList.add("row-wrong");
+              }
+            } else {
+              row.classList.add("row-wrong");
+            }
+          }
+        }
+        showQuestionFeedback(idx);
+      }
+      updateStats();
+    }
+
+    function updateStats() {
+      var mode = document.getElementById("modeSelect").value;
+      var doneCount = 0, fullCount = 0, notFullCount = 0, earnedTotal = 0, maxTotal = 0;
+      for (var idx = 0; idx < activeQuestions.length; idx++) {
+        var sc = getQuestionScore(idx);
+        maxTotal += sc.max;
+        if (sc.isDone) doneCount++;
+        if (mode === "instant" || isExamSubmitted) {
+          if (sc.isDone) {
+            earnedTotal += sc.earned;
+            if (sc.isFull) fullCount++;
+            else notFullCount++;
+          } else if (isExamSubmitted) {
+            notFullCount++;
+          }
+        }
+      }
+      document.getElementById("progressText").textContent = "Đã làm: " + doneCount + " / " + activeQuestions.length;
+      document.getElementById("correctText").textContent = "Tối đa: " + fullCount;
+      document.getElementById("wrongText").textContent = "Chưa tối đa: " + notFullCount;
+      document.getElementById("scoreText").textContent = "Điểm: " + earnedTotal.toFixed(2) + " / " + maxTotal.toFixed(2);
+
+      var showRetry = (notFullCount > 0);
+      document.getElementById("retryWrongBtn").style.display = showRetry ? "inline-block" : "none";
+      document.getElementById("bottomRetryBtn").style.display = showRetry ? "inline-block" : "none";
+    }
+
+    function retryWrong() {
+      var wrongList = [];
+      for (var idx = 0; idx < activeQuestions.length; idx++) {
+        if (!getQuestionScore(idx).isFull) wrongList.push(activeQuestions[idx]);
+      }
+      if (wrongList.length > 0) {
+        initQuiz(true, wrongList);
+        scrollToTopFast();
+      }
+    }
+
+    function scrollToTopFast() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    window.addEventListener("scroll", function() {
+      var btn = document.getElementById("floatingTopBtn");
+      if (!btn) return;
+      if (window.scrollY > 300) btn.classList.add("visible");
+      else btn.classList.remove("visible");
+    });
+
+    initQuiz(false);
+  </script>
+</body>
+</html>
