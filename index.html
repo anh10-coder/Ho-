@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Đề Cương Hóa Học 12 - Chương Hợp Chất Chứa Nitrogen</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 10px;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .header-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      font-size: 1.12rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+      text-align: center;
+      text-transform: uppercase;
+      line-height: 1.35;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.83rem;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .filter-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .filter-group { grid-template-columns: 1fr 1fr 1fr; }
+      body { padding: 16px; }
+      h1 { font-size: 1.28rem; }
+    }
+
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    select, button {
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      transition: all 0.15s ease;
+      min-height: 42px;
+    }
+
+    select { background-color: #fff; color: var(--text); width: 100%; }
+    .btn-primary { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-outline { background-color: #fff; color: var(--text); }
+    .btn-warning { background-color: #f59e0b; color: #fff; border-color: #f59e0b; }
+
+    .stats-bar {
+      position: sticky;
+      top: 6px;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .stat-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+    .stat-badge { padding: 4px 8px; border-radius: 6px; background: #f1f5f9; }
+    .stat-correct { color: var(--success); background: var(--success-bg); }
+    .stat-wrong { color: var(--danger); background: var(--danger-bg); }
+    .stat-score { color: var(--primary); background: #dbeafe; }
+
+    .question-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .card-header-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }
+    .topic-tag { font-size: 0.73rem; font-weight: 700; color: var(--primary); background: #eff6ff; padding: 3px 8px; border-radius: 5px; }
+    .type-tag { font-size: 0.73rem; font-weight: 700; color: #7c3aed; background: #f3e8ff; padding: 3px 8px; border-radius: 5px; }
+    .type-tag.sa-tag { color: #0f766e; background: #ccfbf1; }
+
+    .question-text { font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; white-space: pre-line; }
+
+    .svg-box {
+      width: 100%;
+      overflow-x: auto;
+      margin-bottom: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .svg-box svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .options-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .option-btn {
+      text-align: left;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 0.92rem;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      width: 100%;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .option-btn.selected { border-color: var(--primary); background: #dbeafe; font-weight: 700; }
+    .option-btn.correct { border-color: var(--success) !important; background: var(--success-bg) !important; color: #14532d !important; font-weight: 700; }
+    .option-btn.wrong { border-color: var(--danger) !important; background: var(--danger-bg) !important; color: #7f1d1d !important; }
+
+    .tf-list { display: flex; flex-direction: column; gap: 9px; }
+
+    .tf-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 11px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+    }
+
+    @media (min-width: 600px) {
+      .tf-row { flex-direction: row; justify-content: space-between; align-items: center; }
+    }
+
+    .tf-row.row-correct { border-color: var(--success); background: #f0fdf4; }
+    .tf-row.row-wrong { border-color: var(--danger); background: #fef2f2; }
+    .tf-statement { font-size: 0.92rem; flex: 1; }
+    .tf-buttons { display: flex; gap: 8px; width: 100%; }
+    @media (min-width: 600px) { .tf-buttons { width: auto; flex-shrink: 0; } }
+
+    .tf-btn {
+      flex: 1;
+      min-width: 74px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      color: var(--text);
+    }
+
+    .tf-btn.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .tf-btn.correct-choice { background: var(--success) !important; color: #fff !important; border-color: var(--success) !important; }
+    .tf-btn.wrong-choice { background: var(--danger) !important; color: #fff !important; border-color: var(--danger) !important; }
+
+    .sa-wrapper { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 10px; padding: 11px; }
+    .sa-wrapper.sa-correct { border-color: var(--success); background: #f0fdf4; }
+    .sa-wrapper.sa-wrong { border-color: var(--danger); background: #fef2f2; }
+    .sa-input-row { display: flex; gap: 8px; align-items: center; }
+    .sa-input {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      outline: none;
+      background: #fff;
+    }
+    .sa-input:focus { border-color: var(--primary); }
+
+    .feedback { margin-top: 10px; font-size: 0.88rem; font-weight: 600; padding: 9px 12px; border-radius: 8px; display: none; }
+    .feedback.show { display: block; }
+    .feedback.ok { color: var(--success); background: var(--success-bg); }
+    .feedback.partial { color: var(--warning); background: var(--warning-bg); }
+    .feedback.err { color: var(--danger); background: var(--danger-bg); }
+
+    .explanation-box {
+      margin-top: 9px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      font-size: 0.87rem;
+      color: #1e3a8a;
+      line-height: 1.5;
+      white-space: pre-line;
+      display: none;
+    }
+    .explanation-box.show { display: block; }
+    .explanation-title { font-weight: 700; color: var(--primary); margin-bottom: 3px; }
+
+    .bottom-tool-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 16px;
+      margin-bottom: 40px;
+      border: 2px dashed var(--primary);
+      text-align: center;
+    }
+    .bottom-tool-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .bottom-tool-desc { font-size: 0.84rem; color: var(--muted); margin-bottom: 12px; }
+    .bottom-tool-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+    .floating-top-btn {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      z-index: 50;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      display: none;
+    }
+    .floating-top-btn.visible { display: inline-flex; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-card">
+      <h1>ĐỀ CƯƠNG HÓA HỌC 12 - CHƯƠNG 3: HỢP CHẤT CHỨA NITROGEN</h1>
+      <div class="subtitle">Trường THPT Dương Văn Thì (Trang 74 - 108) • Amine • Amino acid & Peptide • Protein & Enzyme • Ôn tập</div>
+
+      <div class="controls">
+        <div class="filter-group">
+          <select id="topicSelect" onchange="initQuiz(false)">
+            <option value="all">Tất cả 4 phần (Trang 74 - 108)</option>
+            <option value="0">PHẦN 1: AMINE (Trang 74 - 79)</option>
+            <option value="1">PHẦN 2: AMINO ACID & PEPTIDE (Trang 82 - 90)</option>
+            <option value="2">PHẦN 3: PROTEIN & ENZYME (Trang 91 - 101)</option>
+            <option value="3">PHẦN 4: ÔN TẬP CHƯƠNG (Trang 103 - 108)</option>
+          </select>
+
+          <select id="typeSelect" onchange="initQuiz(false)">
+            <option value="all">Tất cả dạng câu hỏi (166 câu)</option>
+            <option value="mcq">Phần II: Trắc nghiệm A, B, C, D</option>
+            <option value="tf">Phần III: Trắc nghiệm Đúng / Sai</option>
+            <option value="sa">Phần IV: Trả lời ngắn</option>
+          </select>
+
+          <select id="modeSelect" onchange="initQuiz(false)">
+            <option value="instant">Chế độ: Làm câu nào biết đúng/sai ngay</option>
+            <option value="exam">Chế độ: Làm hết rồi bấm Chấm điểm</option>
+          </select>
+        </div>
+
+        <div class="action-group">
+          <button class="btn-primary" id="submitBtn" onclick="submitExam()" style="display:none;">Nộp bài & Chấm điểm</button>
+          <button class="btn-warning" id="retryWrongBtn" onclick="retryWrong()" style="display:none;">Làm lại câu sai / thiếu điểm</button>
+          <button class="btn-outline" onclick="initQuiz(true)">🔀 Đảo câu & Đảo đáp án</button>
+          <button class="btn-outline" onclick="initQuiz(false)">🔄 Làm lại từ đầu (Gốc)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <span id="progressText">Đã làm: 0 / 0</span>
+      <div class="stat-group">
+        <span class="stat-badge stat-correct" id="correctText">Tối đa: 0</span>
+        <span class="stat-badge stat-wrong" id="wrongText">Chưa tối đa: 0</span>
+        <span class="stat-badge stat-score" id="scoreText">Điểm: 0.00 / 0.00</span>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <div class="bottom-tool-card">
+      <div class="bottom-tool-title">Công cụ cuối trang - Hóa học 12</div>
+      <div class="bottom-tool-desc">Sử dụng các nút bên dưới để nộp bài, đảo câu kèm đáp án hoặc cuộn nhanh lên đầu trang.</div>
+      <div class="bottom-tool-actions">
+        <button class="btn-primary" id="bottomSubmitBtn" onclick="submitExam()" style="display:none;">Nộp bài & Chấm điểm ngay</button>
+        <button class="btn-warning" id="bottomRetryBtn" onclick="retryWrong()" style="display:none;">Làm lại câu sai / thiếu điểm</button>
+        <button class="btn-outline" onclick="initQuiz(true)">🔀 Đảo câu & Đảo đáp án</button>
+        <button class="btn-primary" onclick="scrollToTopFast()">⚡ Lên đầu trang</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="floating-top-btn" id="floatingTopBtn" onclick="scrollToTopFast()">⬆ Đầu trang</button>
+
+  <script>
+    window.onerror = function(msg, url, line) {
+      var c = document.getElementById("quizContainer");
+      if (c) c.innerHTML = '<div class="question-card" style="color:#dc2626;font-weight:700;">Lỗi JS: ' + msg + ' (Dòng ' + line + ')</div>';
+    };
+  </script>
+
+  <script>
+    var TOPICS = [
+      "PHẦN 1: AMINE (Trang 74 - 79)",
+      "PHẦN 2: AMINO ACID & PEPTIDE (Trang 82 - 90)",
+      "PHẦN 3: PROTEIN & ENZYME (Trang 91 - 101)",
+      "PHẦN 4: ÔN TẬP CHƯƠNG (Trang 103 - 108)"
+    ];
+    var LETTERS = ["A", "B", "C", "D"];
+    var SUB_LETTERS = ["a", "b", "c", "d"];
+    var TF_POINTS = [0, 0.1, 0.25, 0.5, 1.0];
+
+    function makeSvgTable(headers, rows, widths) {
+      var totalW = 0;
+      for (var i = 0; i < widths.length; i++) totalW += widths[i];
+      var rowH = 36;
+      var totalH = (rows.length + 1) * rowH;
+      var s = '<div class="svg-box"><svg viewBox="0 0 ' + totalW + ' ' + totalH + '" width="' + totalW + '" height="' + totalH + '" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="13">';
+      s += '<rect x="0" y="0" width="' + totalW + '" height="' + rowH + '" fill="#e2e8f0"/>';
+      s += '<rect x="0" y="' + rowH + '" width="' + totalW + '" height="' + (rows.length * rowH) + '" fill="#ffffff"/>';
+
+      var cx = 0;
+      for (var c = 0; c < headers.length; c++) {
+        var w = widths[c];
+        s += '<text x="' + (cx + w / 2) + '" y="23" text-anchor="middle" font-weight="bold" fill="#0f172a">' + headers[c] + '</text>';
+        cx += w;
+      }
+
+      for (var r = 0; r < rows.length; r++) {
+        var y = (r + 1) * rowH;
+        s += '<line x1="0" y1="' + y + '" x2="' + totalW + '" y2="' + y + '" stroke="#cbd5e1" stroke-width="1"/>';
+        var rx = 0;
+        for (var k = 0; k < rows[r].length; k++) {
+          var kw = widths[k];
+          s += '<text x="' + (rx + kw / 2) + '" y="' + (y + 23) + '" text-anchor="middle" fill="#1e293b">' + rows[r][k] + '</text>';
+          rx += kw;
+        }
+      }
+
+      var vx = 0;
+      for (var v = 0; v < widths.length - 1; v++) {
+        vx += widths[v];
+        s += '<line x1="' + vx + '" y1="0" x2="' + vx + '" y2="' + totalH + '" stroke="#cbd5e1" stroke-width="1"/>';
+      }
+      s += '<rect x="0" y="0" width="' + totalW + '" height="' + totalH + '" fill="none" stroke="#94a3b8" stroke-width="1.5"/>';
+      s += '</svg></div>';
+      return s;
+    }
+
+    function renderSvgGraphic(code) {
+      if (code === "tbl_p1_c34") {
+        return makeSvgTable(
+          ["Chất", "Thuốc thử", "Hiện tượng"],
+          [
+            ["X", "Quỳ tím", "Quỳ tím chuyển màu xanh"],
+            ["Y", "Dung dịch AgNO₃/NH₃, t°", "Tạo kết tủa Ag"],
+            ["Z", "Nước bromine", "Tạo kết tủa trắng"]
+          ],
+          [70, 200, 230]
+        );
+      }
+      if (code === "tbl_p2_c34") {
+        return makeSvgTable(
+          ["Chất", "Thuốc thử", "Hiện tượng"],
+          [
+            ["X", "Quỳ tím", "Quỳ tím chuyển màu hồng"],
+            ["Y", "Dung dịch AgNO₃ trong NH₃", "Tạo kết tủa Ag"],
+            ["Z", "Nước bromine", "Tạo kết tủa trắng"]
+          ],
+          [70, 210, 220]
+        );
+      }
+      if (code === "tbl_p4_c35") {
+        return makeSvgTable(
+          ["Amino acid", "Alanine", "Lysine", "Glutamic acid", "Histidine", "Aspartic acid"],
+          [["pH (pI)", "6,0", "9,7", "3,2", "7,6", "2,8"]],
+          [100, 80, 80, 105, 85, 100]
+        );
+      }
+      if (code === "svg_p2_c32") {
+        return '<div class="svg-box"><svg viewBox="0 0 520 150" width="520" height="150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="13">' +
+          '<rect x="6" y="6" width="248" height="64" rx="8" fill="#fff" stroke="#cbd5e1"/>' +
+          '<text x="16" y="28" font-weight="bold" fill="#2563eb">Hình A (Lysine):</text>' +
+          '<text x="16" y="52" fill="#0f172a">H₂N–[CH₂]₄–CH(NH₃⁺)–COO⁻</text>' +
+          '<rect x="266" y="6" width="248" height="64" rx="8" fill="#fff" stroke="#cbd5e1"/>' +
+          '<text x="276" y="28" font-weight="bold" fill="#2563eb">Hình B (Valine):</text>' +
+          '<text x="276" y="52" fill="#0f172a">CH₃–CH(CH₃)–CH(NH₃⁺)–COO⁻</text>' +
+          '<rect x="6" y="80" width="248" height="64" rx="8" fill="#fff" stroke="#cbd5e1"/>' +
+          '<text x="16" y="102" font-weight="bold" fill="#2563eb">Hình C (Alanine):</text>' +
+          '<text x="16" y="126" fill="#0f172a">CH₃–CH(NH₃⁺)–COO⁻</text>' +
+          '<rect x="266" y="80" width="248" height="64" rx="8" fill="#fff" stroke="#cbd5e1"/>' +
+          '<text x="276" y="102" font-weight="bold" fill="#2563eb">Hình D (Glutamic acid):</text>' +
+          '<text x="276" y="126" fill="#0f172a">HOOC–[CH₂]₂–CH(NH₃⁺)–COO⁻</text>' +
+          '</svg></div>';
+      }
+      if (code === "svg_p2_c33") {
+        return makeSvgTable(
+          ["pH", "4,0", "7,6", "12,0"],
+          [
+            ["Dạng tồn tại", "Dạng (I): Cation (+)", "Dạng (II): Ion lưỡng cực (0)", "Dạng (III): Anion (-)"],
+            ["Cấu tạo", "R(NH⁺)–CH(NH₃⁺)–COO⁻", "R(N)–CH(NH₃⁺)–COO⁻", "R(N)–CH(NH₂)–COO⁻"]
+          ],
+          [95, 165, 180, 165]
+        );
+      }
+      if (code === "svg_p2_c46") {
+        return '<div class="svg-box"><svg viewBox="0 0 460 95" width="460" height="95" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="14">' +
+          '<rect x="4" y="4" width="452" height="87" rx="8" fill="#fff" stroke="#cbd5e1"/>' +
+          '<text x="230" y="26" text-anchor="middle" font-weight="bold" fill="#2563eb">Công thức cấu tạo của peptide X (Ala-Gly):</text>' +
+          '<text x="230" y="60" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">H₂N – CH(CH₃) – CO – NH – CH₂ – COOH</text>' +
+          '</svg></div>';
+      }
+      if (code === "svg_p3_c20") {
+        return '<div class="svg-box"><svg viewBox="0 0 420 210" width="420" height="210" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="12">' +
+          '<rect x="0" y="0" width="420" height="210" rx="8" fill="#fff"/>' +
+          '<line x1="55" y1="170" x2="390" y2="170" stroke="#0f172a" stroke-width="2"/>' +
+          '<line x1="55" y1="170" x2="55" y2="20" stroke="#0f172a" stroke-width="2"/>' +
+          '<path d="M 55 170 Q 95 35 160 35 L 360 35" fill="none" stroke="#2563eb" stroke-width="2.5"/>' +
+          '<path d="M 55 170 Q 160 50 280 35 L 360 35" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>' +
+          '<line x1="120" y1="45" x2="120" y2="170" stroke="#94a3b8" stroke-dasharray="3,3"/>' +
+          '<line x1="200" y1="45" x2="200" y2="170" stroke="#94a3b8" stroke-dasharray="3,3"/>' +
+          '<text x="150" y="28" font-weight="bold" fill="#2563eb">(I) Có enzyme</text>' +
+          '<text x="235" y="65" font-weight="bold" fill="#dc2626">(II) Không xúc tác</text>' +
+          '<text x="50" y="188" text-anchor="middle">0</text>' +
+          '<text x="120" y="188" text-anchor="middle" font-weight="bold">t₁</text>' +
+          '<text x="200" y="188" text-anchor="middle" font-weight="bold">t₂</text>' +
+          '<text x="330" y="195" text-anchor="middle" font-weight="bold">Thời gian phản ứng</text>' +
+          '<text x="18" y="95" transform="rotate(-90 18,95)" text-anchor="middle" font-weight="bold">Nồng độ sản phẩm</text>' +
+          '</svg></div>';
+      }
+      if (code === "svg_p3_c21") {
+        return '<div class="svg-box"><svg viewBox="0 0 430 220" width="430" height="220" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" fon
